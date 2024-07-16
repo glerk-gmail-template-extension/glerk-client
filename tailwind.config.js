@@ -27,6 +27,10 @@ export default {
       height: {
         120: "30rem",
       },
+      borderWidth: {
+        1.5: "1.5px",
+        10: "10px",
+      },
       boxShadow: {
         "3xl": "8px 8px 16px 0 rgba(0, 0, 0, 0.08)",
       },
