@@ -1,8 +1,9 @@
-import { FaChevronDown, FaChevronUp } from "react-icons/fa6";
+import { Link } from "react-router-dom";
+import { FaChevronDown, FaChevronUp, FaRegTrashCan } from "react-icons/fa6";
 import { IoFolderOpenOutline } from "react-icons/io5";
 import { LuFolderEdit } from "react-icons/lu";
 
-import Button from "../../components/ui/Button";
+import IconButton from "../../components/ui/IconButton";
 
 export default function Group({
   isActive,
@@ -44,9 +45,18 @@ export default function Group({
             <span className="self-center font-semibold text-dark-gray">
               Total: 6
             </span>
-            <Button text="Edit Group">
-              <LuFolderEdit />
-            </Button>
+            <div className="flex">
+              <Link to="/templates/groups/edit">
+                <IconButton tooltip="Edit Group Name">
+                  <LuFolderEdit />
+                </IconButton>
+              </Link>
+              <Link to="/templates/groups/delete">
+                <IconButton tooltip="Delete Group">
+                  <FaRegTrashCan />
+                </IconButton>
+              </Link>
+            </div>
           </div>
           {children}
         </div>

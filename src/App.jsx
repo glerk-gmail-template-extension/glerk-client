@@ -3,9 +3,11 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import Template from "./pages/Template";
 import ErrorPage from "./pages/Error";
 import Navigation from "./components/navigation/Navigation";
+import CreateGroup from "./pages/Group/CreateGroup";
+import UpdateGroup from "./pages/Group/UpdateGroup";
+import DeleteGroup from "./pages/Group/DeleteGroup";
 
 import "./App.css";
-import CreateGroup from "./pages/Group/CreateGroup";
 
 function App() {
   return (
@@ -20,6 +22,8 @@ function App() {
           />
           <Route path="/templates" element={<Template />}>
             <Route path="groups/new" element={<CreateGroup />} />
+            <Route path="groups/edit" element={<UpdateGroup />} />
+            <Route path="groups/delete" element={<DeleteGroup />} />
           </Route>
           <Route path="*" element={<ErrorPage />} />
         </Routes>
