@@ -5,7 +5,6 @@ import { HiOutlineXMark } from "react-icons/hi2";
 
 import ModalContainer from "../../components/modal/ModalContainer";
 import ContentWrapper from "../../components/modal/ContentWrapper";
-
 import Input from "../../components/form/Input";
 import Button from "../../components/ui/Button";
 import IconButton from "../../components/ui/IconButton";
@@ -19,7 +18,7 @@ export default function CreateGroup() {
         <div className="flex justify-between px-8 pt-6 pb-3 border-b">
           <h1 className="text-xl font-semibold">New Group</h1>
           <Link to="/templates">
-            <IconButton>
+            <IconButton tooltip="Close">
               <HiOutlineXMark size={25} />
             </IconButton>
           </Link>

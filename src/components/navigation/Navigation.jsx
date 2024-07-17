@@ -15,11 +15,11 @@ export default function Navigation() {
           <div className="self-center">
             <Avatar initial="J" />
           </div>
-          <div className="ml-3 text-left">
+          <div className="ml-3 mr-6 text-left">
             <p className="text-base font-semibold">Jieun Oh</p>
             <p className="text-sm font-light">jieunoh@gmail.com</p>
           </div>
-          <IconButton>
+          <IconButton tooltip="Log out">
             <FiLogOut />
           </IconButton>
         </div>
