@@ -2,10 +2,10 @@ import PropTypes from "prop-types";
 
 export default function Button({
   text,
-  textColor,
-  borderColor,
-  backgroundColor,
-  hoverBackgroundColor,
+  textColor = "text-dark-gray",
+  borderColor = "border-stroke",
+  backgroundColor = "bg-white",
+  hoverBackgroundColor = "hover:bg-gray-50",
   children: Icon,
 }) {
   const buttonStyle = `${textColor} ${borderColor} ${backgroundColor} ${hoverBackgroundColor}`;
@@ -13,9 +13,9 @@ export default function Button({
   return (
     <button
       type="button"
-      className={`flex border ${buttonStyle} font-medium rounded-2xl text-sm px-5 py-2.5 me-2 mb-2`}
+      className={`flex border ${buttonStyle} font-medium rounded-2xl text-sm px-5 py-2.5 h-10`}
     >
-      <div className="self-center mr-1">{Icon}</div>
+      <div className="flex items-center h-5 mr-1.5">{Icon}</div>
       <div>{text}</div>
     </button>
   );
@@ -23,9 +23,9 @@ export default function Button({
 
 Button.propTypes = {
   text: PropTypes.string.isRequired,
-  textColor: PropTypes.string.isRequired,
-  borderColor: PropTypes.string.isRequired,
-  backgroundColor: PropTypes.string.isRequired,
-  hoverBackgroundColor: PropTypes.string.isRequired,
+  textColor: PropTypes.string,
+  borderColor: PropTypes.string,
+  backgroundColor: PropTypes.string,
+  hoverBackgroundColor: PropTypes.string,
   children: PropTypes.node,
 };

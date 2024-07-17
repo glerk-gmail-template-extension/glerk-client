@@ -23,6 +23,14 @@ export default {
       },
       width: {
         100: "25rem",
+        140: "35rem",
+        200: "50rem",
+      },
+      minWidth: {
+        224: "56rem",
+      },
+      maxWidth: {
+        240: "60rem",
       },
       height: {
         120: "30rem",
