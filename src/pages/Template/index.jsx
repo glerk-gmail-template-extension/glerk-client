@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Outlet } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 import { FiPlusCircle } from "react-icons/fi";
 
 import Button from "../../components/ui/Button";
@@ -17,7 +17,7 @@ export default function Template() {
   };
 
   return (
-    <section className="mx-auto mt-12 min-w-224 max-w-240">
+    <>
       <Header />
       <div>
         <div>
@@ -35,16 +35,18 @@ export default function Template() {
           ))}
         </div>
         <div className="flex flex-row-reverse my-4">
-          <Button
-            text="New Template"
-            textColor="text-primary"
-            borderColor="border-primary"
-          >
-            <FiPlusCircle />
-          </Button>
+          <Link to="/templates/new">
+            <Button
+              text="New Template"
+              textColor="text-primary"
+              borderColor="border-primary"
+            >
+              <FiPlusCircle />
+            </Button>
+          </Link>
         </div>
       </div>
       <Outlet />
-    </section>
+    </>
   );
 }
