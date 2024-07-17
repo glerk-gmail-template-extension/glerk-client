@@ -1,5 +1,3 @@
-import PropTypes from "prop-types";
-
 export default function Avatar({ initial }) {
   return (
     <div className="flex items-center justify-center w-10 h-10 rounded-full bg-violet-800">
@@ -7,7 +5,3 @@ export default function Avatar({ initial }) {
     </div>
   );
 }
-
-Avatar.propTypes = {
-  initial: PropTypes.string.isRequired,
-};

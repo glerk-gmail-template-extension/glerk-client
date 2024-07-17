@@ -1,5 +1,3 @@
-import PropTypes from "prop-types";
-
 export default function Button({
   text,
   textColor = "text-dark-gray",
@@ -20,12 +18,3 @@ export default function Button({
     </button>
   );
 }
-
-Button.propTypes = {
-  text: PropTypes.string.isRequired,
-  textColor: PropTypes.string,
-  borderColor: PropTypes.string,
-  backgroundColor: PropTypes.string,
-  hoverBackgroundColor: PropTypes.string,
-  children: PropTypes.node,
-};
