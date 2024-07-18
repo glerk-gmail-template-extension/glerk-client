@@ -25,7 +25,6 @@ export default function Template() {
             <Group
               key={name}
               name={name}
-              isFirstGroup={index === 0}
               isLastGroup={index === GROUP_LIST.length - 1}
               isActive={selectedGroup === name}
               onSelect={() => handleGroupSelect(name)}

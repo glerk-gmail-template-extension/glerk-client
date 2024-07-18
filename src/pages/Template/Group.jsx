@@ -9,7 +9,6 @@ export default function Group({
   isActive,
   onSelect,
   name,
-  isFirstGroup,
   isLastGroup,
   children,
 }) {
@@ -20,7 +19,7 @@ export default function Group({
       <h2 id={groupId}>
         <button
           type="button"
-          className={`flex items-center justify-between w-full gap-3 p-5 font-medium text-dark-gray border border-stroke ${!isLastGroup && "border-b-0"} ${isActive && "bg-gray-50"} ${isFirstGroup && "rounded-t-lg"} ${isLastGroup && !isActive && "rounded-b-lg"} rtl:text-right hover:bg-blue-100`}
+          className={`flex items-center justify-between w-full gap-3 p-5 font-medium text-dark-gray border-t border-stroke ${isLastGroup && !isActive && "border-b"} ${isActive && "bg-gray-50"} rtl:text-right hover:bg-blue-100`}
           data-accordion-target={`#${name}`}
           aria-expanded={isActive}
           aria-controls={name}
@@ -38,9 +37,7 @@ export default function Group({
         className={`${!isActive && "hidden"}`}
         aria-labelledby={groupId}
       >
-        <div
-          className={`p-5 border ${!isLastGroup && "border-b-0"} ${isLastGroup && "border-t-0 rounded-b-lg"} border-stroke`}
-        >
+        <div className={`p-5 ${isLastGroup && isActive && "border-b"}`}>
           <div className="flex justify-between mb-2">
             <span className="self-center font-semibold text-dark-gray">
               Total: 6
