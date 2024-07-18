@@ -13,24 +13,26 @@ import "./App.css";
 function App() {
   return (
     <div className="flex flex-col min-h-screen">
-      <main className="flex-1 mb-20">
-        <Navigation />
-        <section className="mx-auto mt-12 min-w-224 max-w-240">
-          <Routes>
-            <Route
-              path="/"
-              exact
-              element={<Navigate replace to="/templates" />}
-            />
-            <Route path="/templates" element={<Template />}>
-              <Route path="groups/new" element={<CreateGroup />} />
-              <Route path="groups/edit" element={<UpdateGroup />} />
-              <Route path="groups/delete" element={<DeleteGroup />} />
-            </Route>
-            <Route path="/templates/new" element={<CreateTemplate />} />
-            <Route path="*" element={<ErrorPage />} />
-          </Routes>
-        </section>
+      <main className="flex-1 p-10 mb-20">
+        <div className="mx-auto min-w-168 max-w-240">
+          <Navigation />
+          <section className="mt-12">
+            <Routes>
+              <Route
+                path="/"
+                exact
+                element={<Navigate replace to="/templates" />}
+              />
+              <Route path="/templates" element={<Template />}>
+                <Route path="groups/new" element={<CreateGroup />} />
+                <Route path="groups/edit" element={<UpdateGroup />} />
+                <Route path="groups/delete" element={<DeleteGroup />} />
+              </Route>
+              <Route path="/templates/new" element={<CreateTemplate />} />
+              <Route path="*" element={<ErrorPage />} />
+            </Routes>
+          </section>
+        </div>
       </main>
     </div>
   );

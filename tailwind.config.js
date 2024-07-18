@@ -27,7 +27,7 @@ export default {
         200: "50rem",
       },
       minWidth: {
-        224: "56rem",
+        168: "42rem",
       },
       maxWidth: {
         240: "60rem",

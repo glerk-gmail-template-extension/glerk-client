@@ -6,7 +6,7 @@ import IconButton from "../ui/IconButton";
 
 export default function Navigation() {
   return (
-    <nav className="flex items-center justify-between h-20 mx-auto my-3 min-w-224 max-w-240">
+    <nav className="flex items-center justify-between h-20">
       <Link to="/">
         <h1 className="text-3xl font-roboto">Glerk</h1>
       </Link>
