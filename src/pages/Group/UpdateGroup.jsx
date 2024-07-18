@@ -24,7 +24,7 @@ export default function UpdateGroup() {
               text="Update"
               backgroundColor="bg-blue"
               textColor="text-white"
-              hoverBackgroundColor="bg-blue"
+              hoverBackgroundColor="hover:bg-dark-blue"
             >
               <LuFolderEdit />
             </Button>

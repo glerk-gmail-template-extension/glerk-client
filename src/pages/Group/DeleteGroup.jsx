@@ -27,7 +27,7 @@ export default function DeleteGroup() {
               text="Delete"
               backgroundColor="bg-red"
               textColor="text-white"
-              hoverBackgroundColor="bg-red"
+              hoverBackgroundColor="hover:bg-dark-red"
             >
               <FaRegTrashCan />
             </Button>

@@ -24,7 +24,7 @@ export default function CreateGroup() {
               text="Create"
               backgroundColor="bg-blue"
               textColor="text-white"
-              hoverBackgroundColor="bg-blue"
+              hoverBackgroundColor="hover:bg-dark-blue"
             >
               <LuFolderPlus />
             </Button>
