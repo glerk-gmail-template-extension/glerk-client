@@ -27,6 +27,7 @@ export default {
       },
       width: {
         100: "25rem",
+        108: "27rem",
         140: "35rem",
         200: "50rem",
       },
@@ -45,6 +46,8 @@ export default {
       },
       boxShadow: {
         "3xl": "8px 8px 16px 0 rgba(0, 0, 0, 0.08)",
+        popover:
+          "0 0 0 1px rgba(15,15,15,0.05), 0 3px 6px rgba(15,15,15,0.1), 0 9px 24px rgba(15,15,15,0.1)",
       },
     },
   },
