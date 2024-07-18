@@ -3,24 +3,26 @@ import { LuFolderPlus, LuFolderSearch } from "react-icons/lu";
 
 import Button from "../../components/ui/Button";
 import SearchInput from "../../components/form/SearchInput";
+import SelectBox from "../../components/form/SelectBox";
+
+const SELECT_OPTIONS = [
+  { value: "all", text: "All" },
+  { value: "1", text: "Group1" },
+  { value: "2", text: "Group2" },
+  { value: "3", text: "Group3" },
+];
 
 export default function Header() {
   return (
     <header className="flex items-center justify-between mb-4">
       <div className="flex">
-        <div className="flex p-1 mr-4 border rounded-lg border-stroke">
-          <div className="self-center ml-2">
-            <LuFolderSearch />
-          </div>
-          <select
-            defaultValue="All"
-            className="text-sm block w-36 p-2.5 outline-none"
+        <div className="inline-block w-40">
+          <SelectBox
+            defaultValue={SELECT_OPTIONS[0].value}
+            options={SELECT_OPTIONS}
           >
-            <option value="All">All</option>
-            <option value="Group1">Group1</option>
-            <option value="Group2">Group2</option>
-            <option value="Group3">Group3</option>
-          </select>
+            <LuFolderSearch />
+          </SelectBox>
         </div>
         <div className="inline-block w-72">
           <SearchInput placeholder="Search Templates..." />
