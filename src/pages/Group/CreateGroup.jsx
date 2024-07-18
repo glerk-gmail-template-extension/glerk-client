@@ -14,7 +14,10 @@ export default function CreateGroup() {
       <ContentWrapper title="New Group" url="/templates">
         <div className="grid items-end gap-6 px-8 mb-6">
           <div className="pt-10">
-            <Input label="New Group Name" message={validationMessage} />
+            <Input
+              label="New Group Name"
+              validationMessage={validationMessage}
+            />
           </div>
           <div className="flex flex-row-reverse">
             <Button
