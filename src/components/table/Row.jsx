@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 export default function Row() {
   return (
     <tr className="bg-white border-b hover:bg-gray-50">
@@ -7,8 +9,9 @@ export default function Row() {
         </div>
       </td>
       <th scope="row" className="px-6 py-4 font-medium text-gray-900 truncate">
-        Template name
+        <Link to="/templates/edit/1">Template name</Link>
       </th>
+
       <td className="px-6 py-4">2024. 07. 17.</td>
     </tr>
   );
