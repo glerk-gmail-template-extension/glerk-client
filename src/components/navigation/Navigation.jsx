@@ -1,10 +1,44 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { FiLogOut } from "react-icons/fi";
+import { useSetAtom } from "jotai";
 
 import Avatar from "./Avatar";
 import IconButton from "../ui/IconButton";
 
+import axios from "../../api/axiosConfig";
+import { isLoggedInAtom } from "../../lib/atoms";
+import profile from "../../assets/images/profile.png";
+
 export default function Navigation() {
+  const [username, setUsername] = useState(null);
+  const [email, setEmail] = useState(null);
+  const [profileUrl, setProfileUrl] = useState(profile);
+  const setIsLoggedIn = useSetAtom(isLoggedInAtom);
+
+  useEffect(() => {
+    const getUser = async () => {
+      try {
+        const { data } = await axios.get("/v1/user");
+
+        setUsername(data.username);
+        setEmail(data.email);
+        setProfileUrl(data.profileUrl);
+      } catch (error) {
+        console.error(error.response);
+      }
+    };
+
+    getUser();
+  }, []);
+
+  const handleLogoutClick = async () => {
+    localStorage.removeItem("token");
+    setIsLoggedIn(false);
+
+    window.location.href = "/login";
+  };
+
   return (
     <nav className="flex items-center justify-between h-20">
       <Link to="/">
@@ -13,13 +47,13 @@ export default function Navigation() {
       <div className="relative flex items-center justify-between">
         <div className="flex">
           <div className="self-center">
-            <Avatar initial="J" />
+            <Avatar profileUrl={profileUrl} />
           </div>
           <div className="ml-3 mr-6 text-left">
-            <p className="text-base font-semibold">Jieun Oh</p>
-            <p className="text-sm font-light">jieunoh@gmail.com</p>
+            <p className="text-base font-semibold">{username}</p>
+            <p className="text-sm font-light">{email}</p>
           </div>
-          <IconButton tooltip="Log out">
+          <IconButton tooltip="Log out" onClick={handleLogoutClick}>
             <FiLogOut />
           </IconButton>
         </div>
