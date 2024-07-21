@@ -7,14 +7,14 @@ import Avatar from "./Avatar";
 import IconButton from "../ui/IconButton";
 
 import axios from "../../api/axiosConfig";
-import { isLoggedInAtom } from "../../lib/atoms";
+import { tokenAtom } from "../../lib/atoms";
 import profile from "../../assets/images/profile.png";
 
 export default function Navigation() {
   const [username, setUsername] = useState(null);
   const [email, setEmail] = useState(null);
   const [profileUrl, setProfileUrl] = useState(profile);
-  const setIsLoggedIn = useSetAtom(isLoggedInAtom);
+  const setToken = useSetAtom(tokenAtom);
 
   useEffect(() => {
     const getUser = async () => {
@@ -33,8 +33,7 @@ export default function Navigation() {
   }, []);
 
   const handleLogoutClick = async () => {
-    localStorage.removeItem("token");
-    setIsLoggedIn(false);
+    setToken("");
 
     window.location.href = "/login";
   };

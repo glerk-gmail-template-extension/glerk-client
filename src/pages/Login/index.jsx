@@ -1,20 +1,20 @@
 import { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
-import { useSetAtom } from "jotai";
+import { useSetAtom, useAtom } from "jotai";
 
 import axios from "../../api/axiosConfig";
-import { toastMessageAtom, isLoggedInAtom } from "../../lib/atoms";
+import { toastMessageAtom, tokenAtom } from "../../lib/atoms";
 
 const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID;
 
 export default function Login() {
   const navigate = useNavigate();
   const setToastMessage = useSetAtom(toastMessageAtom);
-  const setIsLoggedIn = useSetAtom(isLoggedInAtom);
+  const [token, setToken] = useAtom(tokenAtom);
 
   useEffect(() => {
-    if (localStorage.getItem("token")) {
+    if (token) {
       navigate("/");
     }
   }, []);
@@ -24,10 +24,7 @@ export default function Login() {
 
     try {
       const res = await axios.post("/v1/oauth/login", { idToken });
-
-      const token = res.headers.authorization.split(" ")[1];
-      localStorage.setItem("token", token);
-      setIsLoggedIn(true);
+      setToken(res.headers.authorization.split(" ")[1]);
 
       navigate("/");
     } catch (error) {
