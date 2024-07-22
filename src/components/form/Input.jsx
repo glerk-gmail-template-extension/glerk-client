@@ -1,4 +1,10 @@
-export default function Input({ label, validationMessage, isRequired }) {
+export default function Input({
+  label,
+  validationMessage,
+  isRequired,
+  value,
+  onChange,
+}) {
   return (
     <>
       <div className="relative">
@@ -7,6 +13,8 @@ export default function Input({ label, validationMessage, isRequired }) {
           id={label}
           aria-describedby={`message-${label}`}
           className={`block px-2.5 pb-2.5 pt-4 w-full text-sm text-dark-gray bg-transparent rounded-lg border appearance-none focus:outline-none peer ${validationMessage ? "border-red" : "border-stroke"}`}
+          value={value}
+          onChange={onChange}
           placeholder=" "
         />
         <label
@@ -17,11 +25,11 @@ export default function Input({ label, validationMessage, isRequired }) {
           {isRequired && <span className="absolute -top-1">*</span>}
         </label>
       </div>
-      {validationMessage && (
-        <p id={`message-${label}`} className="mt-2 text-xs text-red">
+      <p id={`message-${label}`} className="mt-2 text-xs text-red">
+        {validationMessage && (
           <span className="font-light">{validationMessage}</span>
-        </p>
-      )}
+        )}
+      </p>
     </>
   );
 }
