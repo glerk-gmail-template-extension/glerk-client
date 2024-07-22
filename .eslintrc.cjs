@@ -43,6 +43,7 @@ module.exports = {
     "no-param-reassign": 0,
     "global-require": 0,
     "no-underscore-dangle": "off",
+    "no-console": ["warn", { allow: ["error"] }],
   },
   settings: {
     react: {
