@@ -31,15 +31,15 @@ export default function Login() {
       const { status } = error.response;
 
       if (status === 404) {
-        setToastMessage(error.response.data);
+        setToastMessage({ message: error.response.data, isWarning: true });
       } else {
-        console.error("Error during signup:", error);
+        console.error("Error during login:", error);
       }
     }
   };
 
   const handleLoginError = (error) => {
-    console.error(error);
+    console.error("Error during login:", error);
   };
 
   return (

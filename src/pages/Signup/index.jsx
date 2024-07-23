@@ -31,7 +31,7 @@ export default function Signup() {
       const { status } = error.response;
 
       if (status === 404 || status === 409) {
-        setToastMessage(error.response.data);
+        setToastMessage({ message: error.response.data, isWarning: true });
       } else {
         console.error("Error during signup:", error);
       }
@@ -39,7 +39,7 @@ export default function Signup() {
   };
 
   const handleSignupError = (error) => {
-    console.error(error);
+    console.error("Error during signup:", error);
   };
 
   return (

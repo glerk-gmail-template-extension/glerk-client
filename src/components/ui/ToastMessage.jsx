@@ -1,14 +1,14 @@
 import { useSetAtom } from "jotai";
 import { HiOutlineXMark } from "react-icons/hi2";
-import { FaCircleExclamation } from "react-icons/fa6";
+import { FaCircleExclamation, FaCircleInfo } from "react-icons/fa6";
 
 import { toastMessageAtom } from "../../lib/atoms";
 
-export default function ToastMessage({ message }) {
+export default function ToastMessage({ message, isWarning = true }) {
   const setToastMessage = useSetAtom(toastMessageAtom);
 
   const handleCloseClick = () => {
-    setToastMessage(null);
+    setToastMessage({ message: null, isWarning: true });
   };
 
   return (
@@ -17,10 +17,17 @@ export default function ToastMessage({ message }) {
       className="fixed z-50 flex items-center w-full max-w-xs p-4 text-gray-500 transform -translate-x-1/2 bg-white rounded-lg shadow left-1/2 top-5"
       role="alert"
     >
-      <div className="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-orange-500 bg-orange-100 rounded-lg">
-        <FaCircleExclamation />
-        <span className="sr-only">Warning icon</span>
-      </div>
+      {isWarning ? (
+        <div className="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-orange-500 bg-orange-100 rounded-lg">
+          <FaCircleExclamation />
+          <span className="sr-only">Warning icon</span>
+        </div>
+      ) : (
+        <div className="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 rounded-lg text-sky-500 bg-sky-100">
+          <FaCircleInfo />
+          <span className="sr-only">Info icon</span>
+        </div>
+      )}
       <div className="text-sm font-medium whitespace-pre-wrap ms-3">
         {message}
       </div>

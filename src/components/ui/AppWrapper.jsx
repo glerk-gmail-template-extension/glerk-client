@@ -19,7 +19,12 @@ export default function AppWrapper() {
     <div className="relative">
       {isAuthPath && <Outlet />}
       {!isAuthPath && (isLoggedIn ? <App /> : <Navigate to="/signup" />)}
-      {toastMessage && <ToastMessage message={toastMessage} />}
+      {toastMessage.message && (
+        <ToastMessage
+          message={toastMessage.message}
+          isWarning={toastMessage.isWarning}
+        />
+      )}
     </div>
   );
 }
