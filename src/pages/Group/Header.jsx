@@ -1,26 +1,26 @@
 import { Link } from "react-router-dom";
+import { useAtom } from "jotai";
 import { LuFolderPlus, LuFolderSearch } from "react-icons/lu";
 
 import Button from "../../components/ui/Button";
 import SearchInput from "../../components/form/SearchInput";
 import SelectBox from "../../components/form/SelectBox";
 
-const SELECT_OPTIONS = [
-  { value: "all", text: "All" },
-  { value: "1", text: "Group1" },
-  { value: "2", text: "Group2" },
-  { value: "3", text: "Group3" },
-];
+import { groupsAtom } from "../../lib/atoms";
 
 export default function Header() {
+  const [groups] = useAtom(groupsAtom);
+
+  const groupOptions = [
+    { id: 0, name: "All" },
+    ...groups.map((group) => ({ id: group.id, name: group.name })),
+  ];
+
   return (
     <header className="flex items-center justify-between mb-4">
       <div className="flex">
         <div className="inline-block w-40">
-          <SelectBox
-            defaultValue={SELECT_OPTIONS[0].value}
-            options={SELECT_OPTIONS}
-          >
+          <SelectBox defaultValue={groupOptions[0]?.id} options={groupOptions}>
             <LuFolderSearch />
           </SelectBox>
         </div>
@@ -28,7 +28,7 @@ export default function Header() {
           <SearchInput placeholder="Search Templates..." />
         </div>
       </div>
-      <Link to="/templates/groups/new">
+      <Link to="/groups/new">
         <Button text="New Group">
           <LuFolderPlus />
         </Button>
