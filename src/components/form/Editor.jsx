@@ -50,11 +50,11 @@ const MONTH_BUTTONS = [
 ];
 
 const DATE_OPTIONS = [
-  { value: "Today", text: "Today" },
-  { value: "Tomorrow", text: "Tomorrow" },
-  { value: "Next Monday", text: "Next Monday" },
-  { value: "Last week", text: "Last week" },
-  { value: "Next Week", text: "Next Week" },
+  { id: "Today", name: "Today" },
+  { id: "Tomorrow", name: "Tomorrow" },
+  { id: "Next Monday", name: "Next Monday" },
+  { id: "Last week", name: "Last week" },
+  { id: "Next Week", name: "Next Week" },
 ];
 
 const DATE_FORMAT = {
@@ -278,7 +278,7 @@ export default function Editor() {
                 <div className="inline-block">
                   <SelectBox
                     options={DATE_OPTIONS}
-                    defaultValue={DATE_OPTIONS[0].value}
+                    value={DATE_OPTIONS[0].value}
                   >
                     <TbCalendarCode />
                   </SelectBox>

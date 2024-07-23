@@ -1,31 +1,64 @@
 import { Link } from "react-router-dom";
-import { useAtom } from "jotai";
+import { useAtom, useSetAtom } from "jotai";
 import { LuFolderPlus, LuFolderSearch } from "react-icons/lu";
 
 import Button from "../../components/ui/Button";
 import SearchInput from "../../components/form/SearchInput";
 import SelectBox from "../../components/form/SelectBox";
 
-import { groupsAtom } from "../../lib/atoms";
+import {
+  groupsAsyncAtom,
+  searchCriteriaAtom,
+  groupOptionsAtom,
+} from "../../lib/atoms";
 
 export default function Header() {
-  const [groups] = useAtom(groupsAtom);
+  const [searchCriteria, setSearchCriteria] = useAtom(searchCriteriaAtom);
+  const [groupOptions] = useAtom(groupOptionsAtom);
+  const searchGroups = useSetAtom(groupsAsyncAtom);
+  const allOptions = [{ id: 0, name: "All" }, ...groupOptions];
 
-  const groupOptions = [
-    { id: 0, name: "All" },
-    ...groups.map((group) => ({ id: group.id, name: group.name })),
-  ];
+  const handleOptionSelect = (event) => {
+    setSearchCriteria((prevCriteria) => ({
+      ...prevCriteria,
+      groupId: Number(event.target.value),
+    }));
+
+    searchGroups();
+  };
+
+  const handleEnterKeyDown = (event) => {
+    if (event.key === "Enter") {
+      searchGroups();
+    }
+  };
 
   return (
     <header className="flex items-center justify-between mb-4">
       <div className="flex">
         <div className="inline-block w-40">
-          <SelectBox defaultValue={groupOptions[0]?.id} options={groupOptions}>
+          <SelectBox
+            name="groupId"
+            value={searchCriteria.groupId}
+            options={allOptions}
+            onChange={handleOptionSelect}
+          >
             <LuFolderSearch />
           </SelectBox>
         </div>
         <div className="inline-block w-72">
-          <SearchInput placeholder="Search Templates..." />
+          <SearchInput
+            name="templateName"
+            value={searchCriteria.templateName}
+            onChange={(event) => {
+              setSearchCriteria((prevCriteria) => ({
+                ...prevCriteria,
+                templateName: event.target.value,
+              }));
+            }}
+            onKeyDown={handleEnterKeyDown}
+            placeholder="Search Templates..."
+          />
         </div>
       </div>
       <Link to="/groups/new">

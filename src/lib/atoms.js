@@ -9,12 +9,23 @@ export const tokenAtom = atomWithStorage("xauth", "");
 
 export const isLoggedInAtom = atom((get) => !!get(tokenAtom));
 
+export const searchCriteriaAtom = atom({
+  groupId: 0,
+  templateName: "",
+});
+
 export const groupsAtom = atom([]);
 
 export const groupsAsyncAtom = atom(
   async (get) => get(groupsAtom),
-  async (_get, set) => {
-    const { data } = await axios.get("/v1/groups");
+  async (get, set) => {
+    const searchParams = new URLSearchParams(get(searchCriteriaAtom));
+    const { data } = await axios.get(`/v1/groups?${searchParams}`);
     set(groupsAtom, data);
   },
 );
+
+export const groupOptionsAtom = atom(async () => {
+  const { data: groups } = await axios.get(`/v1/groups`);
+  return groups.map((group) => ({ id: group.id, name: group.name }));
+});
