@@ -1,0 +1,66 @@
+import { useNavigate, useParams } from "react-router-dom";
+import { useSetAtom } from "jotai";
+import { FaRegTrashCan } from "react-icons/fa6";
+
+import ModalContainer from "../../../components/modal/ModalContainer";
+import ContentWrapper from "../../../components/modal/ContentWrapper";
+import Button from "../../../components/ui/Button";
+
+import axios from "../../../api/axiosConfig";
+import { toastMessageAtom, groupsAtom } from "../../../lib/atoms";
+
+export default function DeleteGroup() {
+  const navigate = useNavigate();
+  const { groupId } = useParams();
+  const setGroupList = useSetAtom(groupsAtom);
+  const setToastMessage = useSetAtom(toastMessageAtom);
+
+  const handleDeleteGroupClick = async () => {
+    try {
+      const { data } = await axios.delete(`/v1/groups/${groupId}`);
+      setGroupList((prev) => prev.filter((group) => group.id !== data));
+
+      navigate("/groups");
+    } catch (error) {
+      if (error.response) {
+        const { status } = error.response;
+        if (status === 403 || status === 404) {
+          setToastMessage({ message: error.response.data, isWarning: true });
+        }
+      }
+    }
+  };
+
+  return (
+    <ModalContainer>
+      <ContentWrapper title="Delete Group" url="/groups">
+        <div className="grid items-end gap-6 px-8 mb-6">
+          <div className="pt-5 text-dark-gray">
+            <p>Are you sure you want to delete this group?</p>
+            <p>
+              This action will permanently delete the group and all templates
+              within it.
+            </p>
+            <br />
+            <p>
+              This cannot be undone. Click{" "}
+              <span className="font-semibold">Delete</span> to confirm the
+              deletion.
+            </p>
+          </div>
+          <div className="flex flex-row-reverse">
+            <Button
+              text="Delete"
+              backgroundColor="bg-red"
+              textColor="text-white"
+              hoverBackgroundColor="hover:bg-dark-red"
+              onClick={handleDeleteGroupClick}
+            >
+              <FaRegTrashCan />
+            </Button>
+          </div>
+        </div>
+      </ContentWrapper>
+    </ModalContainer>
+  );
+}

@@ -9,9 +9,9 @@ import { Provider } from "jotai";
 
 import Signup from "./pages/Signup";
 import Login from "./pages/Login";
-import CreateGroup from "./pages/Group/CreateGroup";
-import UpdateGroup from "./pages/Group/UpdateGroup";
-import DeleteGroup from "./pages/Group/DeleteGroup";
+import CreateGroup from "./pages/Group/Modal/CreateGroup";
+import UpdateGroup from "./pages/Group/Modal/UpdateGroup";
+import DeleteGroup from "./pages/Group/Modal/DeleteGroup";
 import TemplateList from "./pages/TemplateList";
 import Template from "./pages/Template";
 import ErrorPage from "./pages/Error";
