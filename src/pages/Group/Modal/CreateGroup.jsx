@@ -53,7 +53,7 @@ export default function CreateGroup() {
         <div className="grid items-end gap-6 px-8 mb-6">
           <div className="pt-10">
             <Input
-              label="New Group Name"
+              label="새로운 그룹 이름"
               validationMessage={validationMessage}
               isRequired
               value={groupName}
@@ -62,7 +62,7 @@ export default function CreateGroup() {
           </div>
           <div className="flex flex-row-reverse">
             <Button
-              text="Create"
+              text="그룹 등록"
               backgroundColor="bg-blue"
               textColor="text-white"
               hoverBackgroundColor="hover:bg-dark-blue"

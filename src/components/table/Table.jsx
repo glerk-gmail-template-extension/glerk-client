@@ -82,7 +82,7 @@ export default function Table({ groupId, templates }) {
       <div className="flex flex-row-reverse mt-2">
         {selectedTemplateIds.length > 0 && (
           <Button
-            text="Delete Templates"
+            text="템플릿 삭제"
             textColor="text-red"
             borderColor="border-red"
             onClick={handleDeleteTemplatesClick}

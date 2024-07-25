@@ -48,12 +48,12 @@ export default function Group({
             </span>
             <div className="flex">
               <Link to={`/groups/edit/${id}`}>
-                <IconButton tooltip="Edit Group Name">
+                <IconButton tooltip="그룹 수정">
                   <LuFolderEdit />
                 </IconButton>
               </Link>
               <Link to={`/groups/delete/${id}`}>
-                <IconButton tooltip="Delete Group">
+                <IconButton tooltip="그룹 삭제">
                   <FaRegTrashCan />
                 </IconButton>
               </Link>

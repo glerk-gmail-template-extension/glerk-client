@@ -9,7 +9,7 @@ export default function ContentWrapper({ children, title, url }) {
       <div className="flex justify-between px-8 pt-6 pb-3 border-b">
         <h1 className="pt-1 text-xl font-semibold">{title}</h1>
         <Link to={url}>
-          <IconButton tooltip="Close">
+          <IconButton tooltip="닫기">
             <HiOutlineXMark size={25} />
           </IconButton>
         </Link>

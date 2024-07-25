@@ -33,24 +33,22 @@ export default function DeleteGroup() {
 
   return (
     <ModalContainer>
-      <ContentWrapper title="Delete Group" url="/groups">
+      <ContentWrapper title="그룹 삭제" url="/groups">
         <div className="grid items-end gap-6 px-8 mb-6">
           <div className="pt-5 text-dark-gray">
-            <p>Are you sure you want to delete this group?</p>
+            <p>그룹을 삭제하시겠습니까?</p>
             <p>
-              This action will permanently delete the group and all templates
-              within it.
+              이 작업을 수행하면 그룹과 하위 템플릿이 영구적으로 삭제됩니다.
             </p>
             <br />
             <p>
-              This cannot be undone. Click{" "}
-              <span className="font-semibold">Delete</span> to confirm the
-              deletion.
+              계속 하길 원하신다면 <span className="font-semibold">삭제</span>{" "}
+              버튼을 클릭해 주세요.
             </p>
           </div>
           <div className="flex flex-row-reverse">
             <Button
-              text="Delete"
+              text="삭제"
               backgroundColor="bg-red"
               textColor="text-white"
               hoverBackgroundColor="hover:bg-dark-red"

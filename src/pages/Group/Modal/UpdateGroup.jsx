@@ -69,7 +69,7 @@ export default function UpdateGroup() {
         <div className="grid items-end gap-6 px-8 mb-6">
           <div className="pt-10">
             <Input
-              label="New Group Name"
+              label="그룹 이름"
               validationMessage={validationMessage}
               isRequired
               value={groupName}
@@ -78,7 +78,7 @@ export default function UpdateGroup() {
           </div>
           <div className="flex flex-row-reverse">
             <Button
-              text="Update"
+              text="그룹 수정"
               backgroundColor="bg-blue"
               textColor="text-white"
               hoverBackgroundColor="hover:bg-dark-blue"

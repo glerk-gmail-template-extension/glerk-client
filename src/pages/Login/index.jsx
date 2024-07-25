@@ -52,12 +52,12 @@ export default function Login() {
         </div>
         <div>
           <p className="text-sm font-light">
-            DON&#39;T HAVE AN ACCOUNT?{" "}
+            계정이 없으신가요?{" "}
             <Link
               to="/signup"
               className="ml-1 underline text-primary hover:font-medium"
             >
-              SIGN UP
+              회원가입으로 이동
             </Link>
           </p>
         </div>
@@ -74,17 +74,17 @@ export default function Login() {
         </div>
         <div className="text-xs text-center font-extralight">
           <p>
-            By continuing, you agree to the{" "}
+            동의 후에는, 해당 서비스의{" "}
             <a href="/" className="font-normal">
-              Terms of use
-            </a>
-            ,
+              이용약관
+            </a>{" "}
+            및{" "}
           </p>
           <p>
             <a href="/" className="font-normal">
-              Privacy Policy
-            </a>{" "}
-            preplaced.
+              개인정보처리방침
+            </a>
+            에 따라 정보가 관리됩니다.
           </p>
         </div>
       </section>
