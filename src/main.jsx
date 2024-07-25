@@ -13,11 +13,14 @@ import CreateGroup from "./pages/Group/Modal/CreateGroup";
 import UpdateGroup from "./pages/Group/Modal/UpdateGroup";
 import DeleteGroup from "./pages/Group/Modal/DeleteGroup";
 import Main from "./pages/Main";
-import Template from "./pages/Template";
 import ErrorPage from "./pages/Error";
+import DeleteTemplate from "./pages/Template/Modal/DeleteTemplate";
+import DeleteTemplates from "./pages/Template/Modal/DeleteTemplates";
 import AppWrapper from "./components/ui/AppWrapper";
 
 import "./index.css";
+import CreateTemplate from "./pages/Template/CreateTemplate";
+import UpdateTemplate from "./pages/Template/UpdateTemplate";
 
 const router = createBrowserRouter([
   {
@@ -43,12 +46,17 @@ const router = createBrowserRouter([
           { path: "new", element: <CreateGroup /> },
           { path: "edit/:groupId", element: <UpdateGroup /> },
           { path: "delete/:groupId", element: <DeleteGroup /> },
+          {
+            path: ":groupId/delete/templates",
+            element: <DeleteTemplates />,
+          },
         ],
       },
-      { path: "templates/new", element: <Template /> },
+      { path: "templates/new", element: <CreateTemplate /> },
       {
         path: "templates/edit/:templateId",
-        element: <Template />,
+        element: <UpdateTemplate />,
+        children: [{ path: "delete", element: <DeleteTemplate /> }],
       },
       { path: "*", element: <ErrorPage /> },
     ],
