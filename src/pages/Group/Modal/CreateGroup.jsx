@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useAtom } from "jotai";
+import { useAtom, useSetAtom } from "jotai";
 import { useNavigate } from "react-router-dom";
 import { LuFolderPlus } from "react-icons/lu";
 
@@ -10,13 +10,14 @@ import Button from "../../../components/ui/Button";
 
 import axios from "../../../api/axiosConfig";
 import { validateGroupName } from "../../../api/validators";
-import { groupsAtom } from "../../../lib/atoms";
+import { groupOptionsAsyncAtom, groupsAtom } from "../../../lib/atoms";
 
 export default function CreateGroup() {
   const navigate = useNavigate();
   const [validationMessage, setValidationMessage] = useState(null);
   const [groupName, setGroupName] = useState("");
   const [groups, setGroups] = useAtom(groupsAtom);
+  const fetchGroupOptions = useSetAtom(groupOptionsAsyncAtom);
 
   const handleCreateClick = async () => {
     const result = validateGroupName(groups, groupName);
@@ -29,6 +30,7 @@ export default function CreateGroup() {
     try {
       const { data } = await axios.post("/v1/groups", { name: groupName });
       setGroups((prev) => [...prev, data]);
+      fetchGroupOptions();
 
       navigate("/groups");
     } catch (error) {

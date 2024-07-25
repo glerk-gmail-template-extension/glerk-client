@@ -7,19 +7,25 @@ import ContentWrapper from "../../../components/modal/ContentWrapper";
 import Button from "../../../components/ui/Button";
 
 import axios from "../../../api/axiosConfig";
-import { toastMessageAtom, groupsAtom } from "../../../lib/atoms";
+import {
+  toastMessageAtom,
+  groupsAtom,
+  groupOptionsAsyncAtom,
+} from "../../../lib/atoms";
 
 export default function DeleteGroup() {
   const navigate = useNavigate();
   const { groupId } = useParams();
   const setGroupList = useSetAtom(groupsAtom);
   const setToastMessage = useSetAtom(toastMessageAtom);
+  const fetchGroupOptions = useSetAtom(groupOptionsAsyncAtom);
 
   const handleDeleteGroupClick = async () => {
     try {
       const { data } = await axios.delete(`/v1/groups/${groupId}`);
       setGroupList((prev) => prev.filter((group) => group.id !== data));
 
+      fetchGroupOptions();
       navigate("/groups");
     } catch (error) {
       if (error.response) {

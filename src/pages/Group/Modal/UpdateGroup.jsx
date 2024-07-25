@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useAtom } from "jotai";
+import { useAtom, useSetAtom } from "jotai";
 import { LuFolderEdit } from "react-icons/lu";
 
 import ModalContainer from "../../../components/modal/ModalContainer";
@@ -10,13 +10,14 @@ import Button from "../../../components/ui/Button";
 
 import axios from "../../../api/axiosConfig";
 import { validateGroupName } from "../../../api/validators";
-import { groupsAtom } from "../../../lib/atoms";
+import { groupsAtom, groupOptionsAsyncAtom } from "../../../lib/atoms";
 
 export default function UpdateGroup() {
   const navigate = useNavigate();
   const [validationMessage, setValidationMessage] = useState(null);
   const { groupId } = useParams();
   const [groups, setGroups] = useAtom(groupsAtom);
+  const fetchGroupOptions = useSetAtom(groupOptionsAsyncAtom);
   const [groupName, setGroupName] = useState(
     groups.find((group) => group.id === Number(groupId))?.name || "",
   );
@@ -44,6 +45,7 @@ export default function UpdateGroup() {
         }),
       );
 
+      fetchGroupOptions();
       navigate("/groups");
     } catch (error) {
       if (error.response) {

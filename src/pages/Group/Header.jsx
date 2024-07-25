@@ -6,15 +6,11 @@ import Button from "../../components/ui/Button";
 import SearchInput from "../../components/form/SearchInput";
 import SelectBox from "../../components/form/SelectBox";
 
-import {
-  groupsAsyncAtom,
-  searchCriteriaAtom,
-  groupOptionsAtom,
-} from "../../lib/atoms";
+import { groupsAsyncAtom, searchCriteriaAtom } from "../../lib/atoms";
 
-export default function Header() {
+export default function Header({ groupOptions }) {
   const [searchCriteria, setSearchCriteria] = useAtom(searchCriteriaAtom);
-  const [groupOptions] = useAtom(groupOptionsAtom);
+
   const searchGroups = useSetAtom(groupsAsyncAtom);
   const allOptions = [{ id: 0, name: "All" }, ...groupOptions];
 
@@ -62,7 +58,7 @@ export default function Header() {
         </div>
       </div>
       <Link to="/groups/new">
-        <Button text="New Group">
+        <Button text="그룹 등록">
           <LuFolderPlus />
         </Button>
       </Link>

@@ -20,7 +20,7 @@ export default function Group({
       <h2 id={id}>
         <button
           type="button"
-          className={`flex items-center justify-between w-full gap-3 p-5 font-medium text-dark-gray border-t border-stroke ${isLastGroup && !isActive && "border-b"} ${isActive && "bg-gray-50"} rtl:text-right hover:bg-gray-50`}
+          className={`flex items-center justify-between w-full gap-3 p-5 font-medium text-dark-gray border-t border-stroke ${isLastGroup && !isActive && "border-b"} ${isActive && "bg-gray-50"} rtl:text-right hover:bg-gray-50 active:bg-gray-100`}
           data-accordion-target={`#${name}`}
           aria-expanded={isActive}
           aria-controls={name}

@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FaRegTrashCan } from "react-icons/fa6";
+import { FiPlusCircle } from "react-icons/fi";
 
 import Row from "./Row";
 import Button from "../ui/Button";
@@ -77,9 +78,9 @@ export default function Table({ groupId, templates }) {
           </tbody>
         </table>
       ) : (
-        <EmptyState />
+        <EmptyState groupId={groupId} />
       )}
-      <div className="flex flex-row-reverse mt-2">
+      <div className="flex justify-end gap-2 mt-2">
         {selectedTemplateIds.length > 0 && (
           <Button
             text="템플릿 삭제"
@@ -90,6 +91,15 @@ export default function Table({ groupId, templates }) {
             <FaRegTrashCan />
           </Button>
         )}
+        <Link to="/templates/new" state={{ groupId }}>
+          <Button
+            text="템플릿 등록"
+            textColor="text-primary"
+            borderColor="border-primary"
+          >
+            <FiPlusCircle />
+          </Button>
+        </Link>
       </div>
     </div>
   );

@@ -25,7 +25,15 @@ export const groupsAsyncAtom = atom(
   },
 );
 
-export const groupOptionsAtom = atom(async () => {
-  const { data: groups } = await axios.get(`/v1/groups`);
-  return groups.map((group) => ({ id: group.id, name: group.name }));
-});
+const groupOptionsAtom = atom([]);
+
+export const groupOptionsAsyncAtom = atom(
+  async (get) => get(groupOptionsAtom),
+  async (get, set) => {
+    const { data: groups } = await axios.get(`/v1/groups`);
+    set(
+      groupOptionsAtom,
+      groups.map((group) => ({ id: group.id, name: group.name })),
+    );
+  },
+);
