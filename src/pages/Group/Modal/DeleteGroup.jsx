@@ -25,7 +25,7 @@ export default function DeleteGroup() {
       const { data } = await axios.delete(`/v1/groups/${groupId}`);
       setGroupList((prev) => prev.filter((group) => group.id !== data));
 
-      fetchGroupOptions();
+      await fetchGroupOptions();
       navigate("/groups");
     } catch (error) {
       if (error.response) {

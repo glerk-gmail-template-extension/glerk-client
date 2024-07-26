@@ -45,7 +45,7 @@ export default function UpdateGroup() {
         }),
       );
 
-      fetchGroupOptions();
+      await fetchGroupOptions();
       navigate("/groups");
     } catch (error) {
       if (error.response) {

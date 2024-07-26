@@ -30,7 +30,7 @@ export default function CreateGroup() {
     try {
       const { data } = await axios.post("/v1/groups", { name: groupName });
       setGroups((prev) => [...prev, data]);
-      fetchGroupOptions();
+      await fetchGroupOptions();
 
       navigate("/groups");
     } catch (error) {
