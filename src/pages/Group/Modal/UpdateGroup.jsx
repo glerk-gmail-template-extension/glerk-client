@@ -5,7 +5,7 @@ import { LuFolderEdit } from "react-icons/lu";
 
 import ModalContainer from "../../../components/modal/ModalContainer";
 import ContentWrapper from "../../../components/modal/ContentWrapper";
-import Input from "../../../components/form/Input";
+import LabelInput from "../../../components/form/LabelInput";
 import Button from "../../../components/ui/Button";
 
 import axios from "../../../api/axiosConfig";
@@ -70,12 +70,13 @@ export default function UpdateGroup() {
       <ContentWrapper title="Update Group" url="/groups">
         <div className="grid items-end gap-6 px-8 mb-6">
           <div className="pt-10">
-            <Input
+            <LabelInput
               label="그룹 이름"
-              validationMessage={validationMessage}
-              isRequired
+              name="group"
               value={groupName}
               onChange={handleInputChange}
+              isRequired
+              validationMessage={validationMessage}
             />
           </div>
           <div className="flex flex-row-reverse">
