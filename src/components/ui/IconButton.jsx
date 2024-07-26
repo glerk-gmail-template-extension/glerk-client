@@ -1,13 +1,18 @@
 import { useState } from "react";
 
-export default function IconButton({ children, tooltip, onClick = () => {} }) {
+export default function IconButton({
+  children,
+  tooltip,
+  onClick = () => {},
+  isActive = false,
+}) {
   const [showTooltip, setShowTooltip] = useState(false);
 
   return (
     <div className="relative inline-block">
       <button
         type="button"
-        className="flex items-center justify-center w-8 h-8 rounded-full hover:bg-gray-100"
+        className={`flex items-center justify-center w-8 h-8 rounded-full ${isActive ? "bg-gray-200" : "hover:bg-gray-100"}`}
         onClick={onClick}
         onMouseEnter={() => setShowTooltip(true)}
         onMouseLeave={() => setShowTooltip(false)}

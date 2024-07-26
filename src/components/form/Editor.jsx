@@ -1,339 +1,95 @@
 import { useEffect, useRef, useState } from "react";
-import {
-  LuBold,
-  LuItalic,
-  LuUnderline,
-  LuStrikethrough,
-  LuQuote,
-  LuListOrdered,
-  LuList,
-  LuUndo,
-  LuRedo,
-  LuLink,
-  LuUnlink,
-  LuAlignJustify,
-  LuAlignLeft,
-  LuAlignCenter,
-  LuAlignRight,
-  LuIndent,
-  LuOutdent,
-  LuRemoveFormatting,
-  LuHeading1,
-  LuHeading2,
-  LuHeading3,
-  LuHeading4,
-  LuHeading5,
-  LuHeading6,
-  LuBaseline,
-  LuHighlighter,
-} from "react-icons/lu";
-import { PiBracketsCurlyBold } from "react-icons/pi";
-import { TbCodePlus, TbCalendarCode } from "react-icons/tb";
+import DOMPurify from "dompurify";
 
-import IconButton from "../ui/IconButton";
-import Divider from "./Divider";
-import ColorInput from "./ColorInput";
-import Input from "./Input";
-import Button from "../ui/Button";
-import SelectBox from "./SelectBox";
+import EditorButtons from "../editor/EditorButtons";
 
-const MAIL_BUTTONS = [
-  { name: "To: First Name" },
-  { name: "To: Full Name" },
-  { name: "To: Email" },
-];
-
-const MONTH_BUTTONS = [
-  { name: "Last Month" },
-  { name: "This Month" },
-  { name: "Next Month" },
-];
-
-const DATE_OPTIONS = [
-  { id: "Today", name: "Today" },
-  { id: "Tomorrow", name: "Tomorrow" },
-  { id: "Next Monday", name: "Next Monday" },
-  { id: "Last week", name: "Last week" },
-  { id: "Next Week", name: "Next Week" },
-];
-
-const DATE_FORMAT = {
-  LONG: {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  },
-  SHORT: {
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-  },
-};
-
-export default function Editor() {
-  const [showVariableArea, setShowVariableArea] = useState(false);
-  const popoverRef = useRef(null);
-  const buttonRef = useRef(null);
+export default function Editor({ name, value, onChange }) {
+  const editorRef = useRef(null);
+  const contentRef = useRef(null);
+  const [isHtmlMode, setIsHtmlMode] = useState(false);
+  const isInitializedRef = useRef(false);
 
   useEffect(() => {
-    function handleClickOutside(event) {
-      if (!showVariableArea || !popoverRef.current || !buttonRef.current) {
-        return;
+    if (!isInitializedRef.current && value) {
+      contentRef.current = DOMPurify.sanitize(value);
+      if (editorRef.current) {
+        editorRef.current.innerHTML = contentRef.current;
       }
+      isInitializedRef.current = true;
+    }
+  }, [value]);
 
-      if (
-        !popoverRef.current.contains(event.target) &&
-        !buttonRef.current.contains(event.target)
-      ) {
-        setShowVariableArea(false);
-      }
+  const handleHtmlModeToggle = () => {
+    if (!isHtmlMode) {
+      contentRef.current = DOMPurify.sanitize(
+        editorRef.current.innerHTML,
+      ).replace(/></g, ">\n<");
+    } else {
+      contentRef.current = DOMPurify.sanitize(
+        editorRef.current.innerText,
+      ).replace(/>\n</g, "><");
+
+      editorRef.current.innerHTML = "";
     }
 
-    document.addEventListener("mousedown", handleClickOutside);
+    setIsHtmlMode(!isHtmlMode);
+  };
 
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [showVariableArea]);
+  useEffect(() => {
+    if (isHtmlMode) {
+      editorRef.current.textContent = contentRef.current;
+    }
+  }, [isHtmlMode]);
+
+  const onEditorBlur = () => {
+    onChange({
+      target: {
+        name,
+        value: isHtmlMode
+          ? DOMPurify.sanitize(editorRef.current.innerText).replace(
+              />\n</g,
+              "><",
+            )
+          : DOMPurify.sanitize(editorRef.current.innerHTML),
+      },
+    });
+  };
 
   return (
-    <div className="w-full p-2 border border-stroke">
-      <div>
-        <IconButton tooltip="Bold">
-          <LuBold size={20} />
-        </IconButton>
-        <IconButton tooltip="Italic">
-          <LuItalic size={20} />
-        </IconButton>
-        <IconButton tooltip="Underline">
-          <LuUnderline size={20} />
-        </IconButton>
-        <IconButton tooltip="Strikethrough">
-          <LuStrikethrough size={20} />
-        </IconButton>
-        <IconButton tooltip="Quote">
-          <LuQuote size={20} />
-        </IconButton>
-        <Divider />
-        <IconButton tooltip="Ordered List">
-          <LuListOrdered size={20} />
-        </IconButton>
-        <IconButton tooltip="Unordered List">
-          <LuList size={20} />
-        </IconButton>
-        <Divider />
-        <IconButton tooltip="Align Justify">
-          <LuAlignJustify size={20} />
-        </IconButton>
-        <IconButton tooltip="Align Left">
-          <LuAlignLeft size={20} />
-        </IconButton>
-        <IconButton tooltip="Align Center">
-          <LuAlignCenter size={20} />
-        </IconButton>
-        <IconButton tooltip="Align Right">
-          <LuAlignRight size={20} />
-        </IconButton>
-        <Divider />
-        <IconButton tooltip="Indent">
-          <LuIndent size={20} />
-        </IconButton>
-        <IconButton tooltip="Outdent">
-          <LuOutdent size={20} />
-        </IconButton>
-        <Divider />
-        <IconButton tooltip="Link">
-          <LuLink size={20} />
-        </IconButton>
-        <IconButton tooltip="Unlink">
-          <LuUnlink size={20} />
-        </IconButton>
-        <Divider />
-        <IconButton tooltip="Undo">
-          <LuUndo size={20} />
-        </IconButton>
-        <IconButton tooltip="Redo">
-          <LuRedo size={20} />
-        </IconButton>
-        <Divider />
-        <IconButton tooltip="Remove Formatting">
-          <LuRemoveFormatting size={20} />
-        </IconButton>
-      </div>
-      <div className="flex items-center mx-1 my-2">
-        <div className="flex items-center h-8">
-          <select name="font" className="outline-none">
-            <option value="Sans Serif">Sans Serif</option>
-            <option value="Serif">Serif</option>
-            <option value="Fixed Width">Fixed Width</option>
-            <option value="Arial">Arial</option>
-            <option value="Arial Black">Arial Black</option>
-            <option value="Comic Sans MS">Comic Sans MS</option>
-            <option value="Courier New">Courier New</option>
-            <option value="Georgia">Georgia</option>
-            <option value="Impact">Impact</option>
-            <option value="Tahoma">Tahoma</option>
-            <option value="Times New Roman">Times New Roman</option>
-            <option value="Trebuchet MS">Trebuchet MS</option>
-            <option value="Verdana">Verdana</option>
-          </select>
-        </div>
-        <div className="flex items-center h-8 ml-4">
-          <select name="fontSize" className="outline-none">
-            <option value="8px">8px</option>
-            <option value="9px">9px</option>
-            <option value="10px">10px</option>
-            <option value="11px">11px</option>
-            <option value="12px">12px</option>
-            <option value="14px">14px</option>
-            <option value="18px">18px</option>
-            <option value="24px">24px</option>
-            <option value="36px">36px</option>
-          </select>
-        </div>
-        <Divider />
-        <IconButton tooltip="Heading 1">
-          <LuHeading1 size={20} />
-        </IconButton>
-        <IconButton tooltip="Heading 2">
-          <LuHeading2 size={20} />
-        </IconButton>
-        <IconButton tooltip="Heading 3">
-          <LuHeading3 size={20} />
-        </IconButton>
-        <IconButton tooltip="Heading 4">
-          <LuHeading4 size={20} />
-        </IconButton>
-        <IconButton tooltip="Heading 5">
-          <LuHeading5 size={20} />
-        </IconButton>
-        <IconButton tooltip="Heading 6">
-          <LuHeading6 size={20} />
-        </IconButton>
-        <Divider />
-        <LuBaseline size={20} />
-        <ColorInput name="textColor" tooltip="Text Color" />
-        <LuHighlighter size={20} className="ml-3" />
-        <ColorInput
-          name="backgroundColor"
-          tooltip="Background Color"
-          defaultValue="#ffffff"
+    <div className="w-full p-2 border rounded-lg border-stroke">
+      <EditorButtons editorRef={editorRef} />
+      <div
+        ref={editorRef}
+        contentEditable
+        className="p-4 overflow-y-auto border-t outline-none h-120 border-stroke reset"
+        style={{
+          fontFamily: "sans-serif",
+          fontSize: "14px",
+          whiteSpace: isHtmlMode ? "pre-wrap" : "normal",
+        }}
+        {...(!isHtmlMode && {
+          dangerouslySetInnerHTML: {
+            __html: contentRef.current,
+          },
+        })}
+        onBlur={onEditorBlur}
+      ></div>
+      <label
+        className="inline-flex items-center mb-5 cursor-pointer"
+        htmlFor="editorType"
+      >
+        <input
+          id="editorType"
+          type="checkbox"
+          value="editor"
+          className="sr-only peer"
+          onChange={handleHtmlModeToggle}
         />
-        <Divider />
-        <div className="relative">
-          <div ref={buttonRef} className="inline-block text-primary">
-            <IconButton
-              tooltip="Variables"
-              onClick={() => setShowVariableArea(!showVariableArea)}
-            >
-              <PiBracketsCurlyBold size={20} />
-            </IconButton>
-          </div>
-          {showVariableArea && (
-            <div
-              ref={popoverRef}
-              className="absolute p-4 transform -translate-x-1/2 bg-white rounded-md w-108 shadow-popover left-1/2"
-            >
-              <h2 className="p-2 font-medium text-gray-400">Custom</h2>
-              <div className="flex items-center p-2">
-                <div className="w-3/4 pr-1.5">
-                  <Input label="Custom Variable" />
-                </div>
-                <div className="text-dark-gray">
-                  <IconButton>
-                    <TbCodePlus size={24} />
-                  </IconButton>
-                </div>
-              </div>
-              <h2 className="p-2 font-medium text-gray-400">Mail</h2>
-              <div className="flex flex-wrap items-center px-2 pb-2">
-                {MAIL_BUTTONS.map(({ name }) => (
-                  <div key={name} className="inline-block p-0.5">
-                    <Button
-                      text={name}
-                      textColor="text-white"
-                      borderColor="border-purple"
-                      backgroundColor="bg-purple"
-                      hoverBackgroundColor="hover:bg-dark-purple"
-                    />
-                  </div>
-                ))}
-              </div>
-              <h2 className="p-2 font-medium text-gray-400">Month</h2>
-              <div className="flex flex-wrap items-center px-2 pb-2">
-                {MONTH_BUTTONS.map(({ name }) => (
-                  <div key={name} className="inline-block p-0.5">
-                    <Button
-                      text={name}
-                      textColor="text-white"
-                      borderColor="border-purple"
-                      backgroundColor="bg-purple"
-                      hoverBackgroundColor="hover:bg-dark-purple"
-                    />
-                  </div>
-                ))}
-              </div>
-              <h2 className="p-2 font-medium text-gray-400">Date</h2>
-              <div className="flex flex-wrap items-center p-2">
-                <div className="inline-block">
-                  <SelectBox
-                    options={DATE_OPTIONS}
-                    value={DATE_OPTIONS[0].value}
-                  >
-                    <TbCalendarCode />
-                  </SelectBox>
-                </div>
-                <div className="flex flex-col items-start font-extralight">
-                  <label
-                    htmlFor="long-date-format"
-                    className="flex items-center"
-                  >
-                    <input
-                      type="radio"
-                      id="long-date-format"
-                      name="dateFormat"
-                      className="w-4 h-4 border-gray-300 rounded"
-                    />
-                    <span className="ml-2 text-sm">
-                      Long (
-                      {new Date().toLocaleDateString(
-                        navigator.language,
-                        DATE_FORMAT.LONG,
-                      )}
-                      )
-                    </span>
-                  </label>
-                  <label
-                    htmlFor="short-date-format"
-                    className="flex items-center"
-                  >
-                    <input
-                      type="radio"
-                      id="short-date-format"
-                      name="dateFormat"
-                      className="w-4 h-4 border-gray-300 rounded"
-                    />
-                    <span className="ml-2 text-sm">
-                      Short (
-                      {new Date().toLocaleDateString(
-                        navigator.language,
-                        DATE_FORMAT.SHORT,
-                      )}
-                      )
-                    </span>
-                  </label>
-                </div>
-              </div>
-            </div>
-          )}
-        </div>
-      </div>
-      <div className="p-4 border-t border-stroke">
-        <div
-          contentEditable
-          className="overflow-y-auto outline-none h-120"
-        ></div>
-      </div>
+        <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:w-5 after:h-5 after:transition-all peer-checked:bg-emerald-400"></div>
+        <span className="text-sm font-medium text-gray-900 ms-3 dark:text-gray-300">
+          {isHtmlMode ? "HTML" : "Editor"}
+        </span>
+      </label>
     </div>
   );
 }

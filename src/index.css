@@ -96,3 +96,21 @@
   border: none;
   border-radius: 50%;
 }
+
+.reset blockquote,
+.reset dl,
+.reset dd,
+.reset h1,
+.reset h2,
+.reset h3,
+.reset h4,
+.reset h5,
+.reset h6,
+.reset hr,
+.reset figure,
+.reset p,
+.reset pre,
+.reset ol,
+.reset ul {
+  all: revert;
+}
