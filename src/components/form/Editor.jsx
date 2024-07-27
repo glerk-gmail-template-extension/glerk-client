@@ -4,76 +4,75 @@ import DOMPurify from "dompurify";
 import EditorButtons from "../editor/EditorButtons";
 
 export default function Editor({ name, value, onChange }) {
-  const editorRef = useRef(null);
-  const contentRef = useRef(null);
+  const [isInitialized, setIsInitialized] = useState(false);
   const [isHtmlMode, setIsHtmlMode] = useState(false);
-  const isInitializedRef = useRef(false);
+  const textEditorRef = useRef(null);
+  const htmlEditorRef = useRef(null);
+  const contentRef = useRef(null);
 
   useEffect(() => {
-    if (!isInitializedRef.current && value) {
+    if (!isInitialized && value) {
       contentRef.current = DOMPurify.sanitize(value);
-      if (editorRef.current) {
-        editorRef.current.innerHTML = contentRef.current;
-      }
-      isInitializedRef.current = true;
+      setIsInitialized(true);
     }
-  }, [value]);
+  }, [value, isInitialized]);
 
   const handleHtmlModeToggle = () => {
     if (!isHtmlMode) {
       contentRef.current = DOMPurify.sanitize(
-        editorRef.current.innerHTML,
+        textEditorRef.current.innerHTML,
       ).replace(/></g, ">\n<");
     } else {
       contentRef.current = DOMPurify.sanitize(
-        editorRef.current.innerText,
+        htmlEditorRef.current.value,
       ).replace(/>\n</g, "><");
-
-      editorRef.current.innerHTML = "";
     }
 
     setIsHtmlMode(!isHtmlMode);
   };
-
-  useEffect(() => {
-    if (isHtmlMode) {
-      editorRef.current.textContent = contentRef.current;
-    }
-  }, [isHtmlMode]);
 
   const onEditorBlur = () => {
     onChange({
       target: {
         name,
         value: isHtmlMode
-          ? DOMPurify.sanitize(editorRef.current.innerText).replace(
+          ? DOMPurify.sanitize(htmlEditorRef.current.value).replace(
               />\n</g,
               "><",
             )
-          : DOMPurify.sanitize(editorRef.current.innerHTML),
+          : DOMPurify.sanitize(textEditorRef.current.innerHTML),
       },
     });
   };
 
   return (
     <div className="w-full p-2 border rounded-lg border-stroke">
-      <EditorButtons editorRef={editorRef} />
-      <div
-        ref={editorRef}
-        contentEditable
-        className="p-4 overflow-y-auto border-t outline-none h-120 border-stroke reset"
-        style={{
-          fontFamily: "sans-serif",
-          fontSize: "14px",
-          whiteSpace: isHtmlMode ? "pre-wrap" : "normal",
-        }}
-        {...(!isHtmlMode && {
-          dangerouslySetInnerHTML: {
-            __html: contentRef.current,
-          },
-        })}
-        onBlur={onEditorBlur}
-      ></div>
+      {!isHtmlMode && <EditorButtons editorRef={textEditorRef} />}
+      {isHtmlMode ? (
+        <textarea
+          rows={22}
+          ref={htmlEditorRef}
+          onBlur={onEditorBlur}
+          defaultValue={contentRef?.current || ""}
+          className="w-full p-4 overflow-y-auto border-t outline-none border-stroke reset"
+        />
+      ) : (
+        <div
+          ref={textEditorRef}
+          contentEditable
+          className="p-4 overflow-y-auto border-t outline-none h-120 border-stroke reset"
+          style={{
+            fontFamily: "sans-serif",
+            fontSize: "14px",
+          }}
+          {...(!isHtmlMode && {
+            dangerouslySetInnerHTML: {
+              __html: contentRef.current,
+            },
+          })}
+          onBlur={onEditorBlur}
+        ></div>
+      )}
       <label
         className="inline-flex items-center mb-5 cursor-pointer"
         htmlFor="editorType"

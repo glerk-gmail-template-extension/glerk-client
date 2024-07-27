@@ -237,7 +237,7 @@ export default function Template({
             {...getFieldProps("bccList")}
           />
         </div>
-        <div>
+        <div className="h-162.5">
           <p className="mb-2 text-sm font-medium text-dark-gray">메일 본문</p>
           <Editor {...getFieldProps("body")} />
         </div>
