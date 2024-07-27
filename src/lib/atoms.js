@@ -1,13 +1,26 @@
 import { atom } from "jotai";
-import { atomWithStorage } from "jotai/utils";
 
 import axios from "../api/axiosConfig";
 
 export const toastMessageAtom = atom({ message: null, isWarning: true });
 
-export const tokenAtom = atomWithStorage("xauth", "");
+export const userAtom = atom(null);
 
-export const isLoggedInAtom = atom((get) => !!get(tokenAtom));
+export const userAsyncAtom = atom(
+  async (get) => get(userAtom),
+  async (get, set) => {
+    try {
+      const { data } = await axios.get("/v1/user");
+      set(userAtom, {
+        username: data.username,
+        email: data.email,
+        profileUrl: data.profileUrl,
+      });
+    } catch (error) {
+      set(userAtom, null);
+    }
+  },
+);
 
 export const searchCriteriaAtom = atom({
   groupId: 0,

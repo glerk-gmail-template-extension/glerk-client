@@ -4,27 +4,27 @@ import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
 import { useAtom, useSetAtom } from "jotai";
 
 import axios from "../../api/axiosConfig";
-import { toastMessageAtom, tokenAtom } from "../../lib/atoms";
+import { toastMessageAtom, userAsyncAtom } from "../../lib/atoms";
 
 const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID;
 
 export default function Signup() {
   const navigate = useNavigate();
   const setToastMessage = useSetAtom(toastMessageAtom);
-  const [token, setToken] = useAtom(tokenAtom);
+  const [user, fetchUser] = useAtom(userAsyncAtom);
 
   useEffect(() => {
-    if (token) {
+    if (user) {
       navigate("/");
     }
-  }, []);
+  }, [user]);
 
   const handleSignupSuccess = async (response) => {
     const idToken = response.credential;
 
     try {
-      const res = await axios.post("/v1/oauth/signup", { idToken });
-      setToken(res.headers.authorization.split(" ")[1]);
+      await axios.post("/v1/oauth/signup", { idToken });
+      await fetchUser();
 
       navigate("/");
     } catch (error) {

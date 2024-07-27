@@ -5,7 +5,6 @@ import {
   Navigate,
   RouterProvider,
 } from "react-router-dom";
-import { Provider } from "jotai";
 
 import Signup from "./pages/Signup";
 import Login from "./pages/Login";
@@ -65,8 +64,6 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <Provider>
-      <RouterProvider router={router} />
-    </Provider>
+    <RouterProvider router={router} />
   </React.StrictMode>,
 );
