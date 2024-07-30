@@ -48,78 +48,8 @@ export const addVariable = (variable, editableRef, cursorRef) => {
   editableEl.focus();
 };
 
-export const getTextAlign = (node) => {
-  while (node && node !== document) {
-    const { textAlign } = window.getComputedStyle(node);
-
-    if (["left", "center", "right", "justify"].includes(textAlign)) {
-      return textAlign;
-    }
-
-    node = node.parentNode;
-  }
-
-  return null;
-};
-
-export const getFontFamily = (node, fonts) => {
-  const lowerCaseFonts = fonts.map((font) => font.toLowerCase());
-  const fontPair = fonts.reduce((acc, font) => {
-    const key = font.toLowerCase();
-    acc[key] = font;
-    return acc;
-  }, {});
-
-  while (node && node !== document) {
-    const fontFamily = window
-      .getComputedStyle(node)
-      .fontFamily.replace(/['"]/g, "")
-      .toLowerCase();
-
-    if (lowerCaseFonts.includes(fontFamily)) {
-      return fontPair[fontFamily];
-    }
-
-    node = node.parentNode;
-  }
-
-  return null;
-};
-
-export const getFontSize = (node, fontSizes) => {
-  const sizePair = fontSizes.reduce((acc, size) => {
-    const key = size.description;
-    acc[key] = size.option;
-
-    return acc;
-  }, {});
-
-  while (node && node !== document) {
-    const { fontSize } = window.getComputedStyle(node);
-
-    if (sizePair[fontSize]) {
-      return sizePair[fontSize];
-    }
-
-    node = node.parentNode;
-  }
-
-  return null;
-};
-
-export const getHeaderTag = (node) => {
-  while (node && node !== document) {
-    const nodeName = node.nodeName.toLowerCase();
-
-    if (["h1", "h2", "h3", "h4", "h5", "h6"].includes(nodeName)) {
-      return nodeName.toUpperCase();
-    }
-
-    node = node.parentNode;
-  }
-
-  return null;
-};
+const WHITE = "#ffffff";
+const BLACK = "#000000";
 
 const rgbToHex = (rgb) => {
   const result = rgb.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*[\d.]+)?\)$/);
@@ -132,34 +62,53 @@ const rgbToHex = (rgb) => {
   return `#${r}${g}${b}`.toUpperCase();
 };
 
-export const getFontColor = (node) => {
-  while (node && node !== document) {
-    const fontColor = window.getComputedStyle(node).color;
+export const getStyles = (node, FONT_SIZE, FONT_FAMILY) => {
+  const styles = {};
 
-    if (fontColor) {
-      return rgbToHex(fontColor);
+  while (node && node !== document) {
+    const { textAlign, fontSize, color, backgroundColor } =
+      window.getComputedStyle(node);
+
+    if (
+      !styles.textAlign &&
+      ["left", "center", "right", "justify"].includes(textAlign)
+    ) {
+      styles.textAlign = textAlign;
+    }
+
+    if (!styles.fontSize && FONT_SIZE[fontSize]) {
+      styles.fontSize = FONT_SIZE[fontSize];
+    }
+
+    if (!styles.color && color) {
+      styles.color = rgbToHex(color) || BLACK;
+    }
+
+    if (!styles.backgroundColor && backgroundColor) {
+      const hex = rgbToHex(backgroundColor);
+      styles.backgroundColor = (hex === BLACK ? WHITE : hex) || WHITE;
+    }
+
+    const nodeName = node.nodeName.toLowerCase();
+
+    if (
+      !styles.header &&
+      ["h1", "h2", "h3", "h4", "h5", "h6"].includes(nodeName)
+    ) {
+      styles.header = nodeName.toUpperCase();
+    }
+
+    const fontFamily = window
+      .getComputedStyle(node)
+      .fontFamily.replace(/['"]/g, "")
+      .toLowerCase();
+
+    if (!styles.fontFamily) {
+      styles.fontFamily = FONT_FAMILY[fontFamily];
     }
 
     node = node.parentNode;
   }
 
-  return null;
-};
-
-export const getBackgroundColor = (node) => {
-  while (node && node !== document) {
-    const { backgroundColor } = window.getComputedStyle(node);
-
-    if (backgroundColor) {
-      if (rgbToHex(backgroundColor) === "#000000") {
-        return "#ffffff";
-      }
-
-      return rgbToHex(backgroundColor) || "#ffffff";
-    }
-
-    node = node.parentNode;
-  }
-
-  return null;
+  return styles;
 };

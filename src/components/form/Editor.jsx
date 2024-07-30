@@ -2,15 +2,11 @@ import { useEffect, useRef, useState } from "react";
 import DOMPurify from "dompurify";
 
 import EditorButtons from "../editor/EditorButtons";
+import { getStyles } from "../../utils/editor";
 import {
-  getBackgroundColor,
-  getFontColor,
-  getFontFamily,
-  getFontSize,
-  getHeaderTag,
-  getTextAlign,
-} from "../../utils/editor";
-import { EDITOR_FONT, EDITOR_FONT_SIZE } from "../../constants/editor";
+  EDITOR_FONT_FAMILY_PAIR,
+  EDITOR_FONT_SIZE_PAIR,
+} from "../../constants/editor";
 
 export default function Editor({ name, value, onChange }) {
   const [isInitialized, setIsInitialized] = useState(false);
@@ -75,7 +71,11 @@ export default function Editor({ name, value, onChange }) {
     const node = getCaretNode();
     if (!node) return;
 
-    const fonts = EDITOR_FONT.map((font) => font.option);
+    const styles = getStyles(
+      node,
+      EDITOR_FONT_SIZE_PAIR,
+      EDITOR_FONT_FAMILY_PAIR,
+    );
 
     setActiveFormat({
       bold: node.closest("b") !== null,
@@ -84,15 +84,15 @@ export default function Editor({ name, value, onChange }) {
       strikethrough: node.closest("strike") !== null,
       insertOrderedList: node.closest("ol") !== null,
       insertUnorderedList: node.closest("ul") !== null,
-      justifyFull: getTextAlign(node) === "justify",
-      justifyLeft: getTextAlign(node) === "left",
-      justifyCenter: getTextAlign(node) === "center",
-      justifyRight: getTextAlign(node) === "right",
-      fontFamily: getFontFamily(node, fonts),
-      fontSize: getFontSize(node, EDITOR_FONT_SIZE),
-      headerTag: getHeaderTag(node),
-      fontColor: getFontColor(node),
-      backgroundColor: getBackgroundColor(node),
+      justifyFull: styles.textAlign === "justify",
+      justifyLeft: styles.textAlign === "left",
+      justifyCenter: styles.textAlign === "center",
+      justifyRight: styles.textAlign === "right",
+      fontFamily: styles.fontFamily,
+      fontSize: styles.fontSize,
+      headerTag: styles.header,
+      fontColor: styles.color,
+      backgroundColor: styles.backgroundColor,
     });
   };
 

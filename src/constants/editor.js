@@ -198,6 +198,17 @@ export const EDITOR_FONT = [
   },
 ];
 
+const EDITOR_FONT_OPTION = EDITOR_FONT.map((font) => font.option);
+
+export const EDITOR_FONT_FAMILY_PAIR = EDITOR_FONT_OPTION.reduce(
+  (acc, font) => {
+    const key = font.toLowerCase();
+    acc[key] = font;
+    return acc;
+  },
+  {},
+);
+
 export const EDITOR_FONT_SIZE = [
   {
     option: "8",
@@ -252,6 +263,11 @@ export const EDITOR_FONT_SIZE = [
     description: "36px",
   },
 ];
+
+export const EDITOR_FONT_SIZE_PAIR = EDITOR_FONT_SIZE.reduce((acc, item) => {
+  acc[item.description] = parseInt(item.option, 10);
+  return acc;
+}, {});
 
 export const EDITOR_HEADER = [
   {
