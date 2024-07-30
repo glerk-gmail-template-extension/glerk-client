@@ -54,16 +54,22 @@ export default function Editor({ name, value, onChange }) {
           ref={htmlEditorRef}
           onBlur={onEditorBlur}
           defaultValue={contentRef?.current || ""}
-          className="w-full p-4 overflow-y-auto border-t outline-none border-stroke reset"
+          className="w-full p-4 overflow-y-auto border-t outline-none border-stroke editor"
+          style={{
+            height: "35rem",
+            display: "block",
+          }}
         />
       ) : (
         <div
           ref={textEditorRef}
           contentEditable
-          className="p-4 overflow-y-auto border-t outline-none h-120 border-stroke reset"
+          className="p-4 overflow-y-auto border-t outline-none border-stroke editor"
           style={{
             fontFamily: "sans-serif",
             fontSize: "14px",
+            height: "30rem",
+            display: "block",
           }}
           {...(!isHtmlMode && {
             dangerouslySetInnerHTML: {

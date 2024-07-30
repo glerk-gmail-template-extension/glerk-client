@@ -41,7 +41,6 @@ export default {
       },
       height: {
         120: "30rem",
-        162.5: "40.625rem",
       },
       borderWidth: {
         1.5: "1.5px",

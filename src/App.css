@@ -1,0 +1,25 @@
+.editor {
+  p,
+  span {
+    font-family: revert;
+    font-size: revert;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-size: revert;
+    font-weight: revert;
+  }
+
+  ol,
+  ul,
+  menu {
+    list-style: revert;
+    margin: revert;
+    padding: revert;
+  }
+}
