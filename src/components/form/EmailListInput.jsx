@@ -1,24 +1,14 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { HiOutlineXMark } from "react-icons/hi2";
 import { IoMailSharp } from "react-icons/io5";
 
-const SEPARATORS = ["Enter", " ", ","];
+import axios from "../../api/axiosConfig";
 
-const EMAIL_LIST = [
-  "jeo92u@gmail.com",
-  "jeo92ny@gmail.com",
-  "jeseLeos@gmail.com",
-  "ohjieun@naver.com",
-  "jieun@kakao.com",
-];
+const SEPARATORS = ["Enter", " ", ","];
 
 export default function EmailListInput({ label, name, value, onChange }) {
   const [emails, setEmails] = useState(value);
-  const [isComposing, setIsComposing] = useState(false);
   const [isInit, setIsInit] = useState(true);
-  const emailInputRef = useRef(null);
-  const [isTyping, setIsTyping] = useState(false);
-  const [selectedIndex, setSelectedIndex] = useState(-1);
 
   useEffect(() => {
     if (emails.length === 0 && value.length > 0 && isInit) {
@@ -54,74 +44,119 @@ export default function EmailListInput({ label, name, value, onChange }) {
     }
   };
 
+  const [emailInput, setEmailInput] = useState("");
+
+  const getEmailIfValid = (email) => {
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    return emailRegex.test(email) ? email : null;
+  };
+
   const addEmail = (event) => {
-    const currentValue = emailInputRef.current.value.trim();
+    const validEmail = getEmailIfValid(emailInput.trim());
 
-    if (SEPARATORS.includes(event.key) && currentValue !== "") {
-      setEmails((prev) => {
-        return [...prev, currentValue];
-      });
+    if (SEPARATORS.includes(event.key)) {
+      if (validEmail !== null) {
+        setEmails((prev) => {
+          return [...prev, validEmail];
+        });
+      }
 
-      emailInputRef.current.value = "";
+      setEmailInput("");
     }
   };
 
-  const handleKeyDown = (event) => {
-    const inputValue = emailInputRef.current.value;
+  const [isComposing, setIsComposing] = useState(false);
+  const [selectedIndex, setSelectedIndex] = useState(-1);
+  const [autocompleteList, setAutocompleteList] = useState([]);
 
-    if (inputValue.trim().length > 0) {
-      setIsTyping(true);
-    } else {
-      setIsTyping(false);
+  const fetchAutocompleteList = async (query) => {
+    if (query.includes("@") && autocompleteList.length === 0) return;
+
+    if (query.includes("@") && autocompleteList.length > 0) {
+      setAutocompleteList([]);
+      return;
     }
 
+    try {
+      const { data } = await axios.get(`/v1/autocomplete?email=${query}`);
+      setAutocompleteList(data);
+    } catch (error) {
+      setAutocompleteList([]);
+      console.error("Error during fetch autocomplete", error);
+    }
+  };
+
+  const handleEmailInut = (event) => {
+    const inputEmailValue = event.target.value;
+
+    if (inputEmailValue.trim().length > 0) {
+      fetchAutocompleteList(inputEmailValue.trim());
+    } else {
+      setAutocompleteList([]);
+    }
+
+    setEmailInput(inputEmailValue);
+  };
+
+  const handleKeyDown = (event) => {
+    const inputValue = event.target.value;
     if (isComposing) return;
 
     preventSubmit(event);
 
     if (event.key === "Backspace" && inputValue.length === 0) {
       if (emails.length === 0) return;
+
       deleteEmail(emails.length - 1);
       return;
     }
+
     if (event.key === "ArrowDown") {
-      setSelectedIndex((prevIndex) => (prevIndex + 1) % EMAIL_LIST.length);
+      setSelectedIndex(
+        (prevIndex) => (prevIndex + 1) % autocompleteList.length,
+      );
     } else if (event.key === "ArrowUp") {
       setSelectedIndex((prevIndex) =>
-        prevIndex === 0 ? EMAIL_LIST.length - 1 : prevIndex - 1,
+        prevIndex === 0 ? autocompleteList.length - 1 : prevIndex - 1,
       );
     } else if (event.key === "Escape") {
-      setIsTyping(false);
+      setAutocompleteList([]);
       setSelectedIndex(-1);
     } else if (
       (event.key === "Enter" || event.key === "Tab") &&
       selectedIndex !== -1
     ) {
-      setEmails((prev) => {
-        return [...prev, EMAIL_LIST[selectedIndex]];
-      });
-      setIsTyping(false);
-      setSelectedIndex(-1);
+      if (autocompleteList[selectedIndex]) {
+        setEmails((prev) => {
+          return [...prev, autocompleteList[selectedIndex].email];
+        });
+      }
 
-      emailInputRef.current.value = "";
+      setAutocompleteList([]);
+      setSelectedIndex(-1);
+      setEmailInput("");
+
+      return;
     }
 
     addEmail(event);
   };
 
   const handleBlur = () => {
-    setIsTyping(false);
+    setAutocompleteList([]);
 
-    const currentValue = emailInputRef.current.value.replaceAll(" ", "");
+    if (emailInput.trim() !== "") {
+      const emailList = emailInput.trim().split(",");
 
-    if (currentValue !== "") {
-      const values = currentValue.split(",");
+      emailList.forEach((email) => {
+        const validEmail = getEmailIfValid(email);
 
-      setEmails((prev) => {
-        return [...prev, ...values];
+        setEmails((prev) => {
+          return [...prev, validEmail];
+        });
       });
 
-      emailInputRef.current.value = "";
+      setEmailInput("");
     }
   };
 
@@ -149,8 +184,8 @@ export default function EmailListInput({ label, name, value, onChange }) {
         <div className="relative flex items-center flex-grow">
           <input
             type="text"
-            name={name}
-            ref={emailInputRef}
+            value={emailInput}
+            onInput={handleEmailInut}
             onKeyDown={handleKeyDown}
             onCompositionStart={() => setIsComposing(true)}
             onCompositionEnd={() => setIsComposing(false)}
@@ -158,10 +193,10 @@ export default function EmailListInput({ label, name, value, onChange }) {
             className="flex-grow p-2 text-sm appearance-none text-dark-gray focus:border-primary focus:outline-none"
             autoComplete="off"
           />
-          {isTyping && (
+          {autocompleteList.length > 0 && (
             <div className="absolute z-10 bg-white rounded-lg shadow left-2 top-10 w-60">
               <ul className="py-2 overflow-y-auto text-sm text-gray-700 max-h-48">
-                {EMAIL_LIST.map((email, index) => (
+                {autocompleteList.map(({ email }, index) => (
                   <li
                     key={email}
                     className={`flex items-center px-4 py-2 hover:bg-gray-100 ${index === selectedIndex && "bg-gray-200"}`}
