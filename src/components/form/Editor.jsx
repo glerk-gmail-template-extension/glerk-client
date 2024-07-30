@@ -2,6 +2,15 @@ import { useEffect, useRef, useState } from "react";
 import DOMPurify from "dompurify";
 
 import EditorButtons from "../editor/EditorButtons";
+import {
+  getBackgroundColor,
+  getFontColor,
+  getFontFamily,
+  getFontSize,
+  getHeaderTag,
+  getTextAlign,
+} from "../../utils/editor";
+import { EDITOR_FONT, EDITOR_FONT_SIZE } from "../../constants/editor";
 
 export default function Editor({ name, value, onChange }) {
   const [isInitialized, setIsInitialized] = useState(false);
@@ -45,9 +54,65 @@ export default function Editor({ name, value, onChange }) {
     });
   };
 
+  const [activeFormat, setActiveFormat] = useState({
+    bold: false,
+    italic: false,
+    underline: false,
+    strikethrough: false,
+  });
+
+  const getCaretNode = () => {
+    const selection = window.getSelection();
+    if (!selection.rangeCount) return null;
+
+    const range = selection.getRangeAt(0);
+    const node = range.startContainer;
+
+    return node.nodeType === 3 ? node.parentNode : node;
+  };
+
+  const updateActiveFormat = () => {
+    const node = getCaretNode();
+    if (!node) return;
+
+    const fonts = EDITOR_FONT.map((font) => font.option);
+
+    setActiveFormat({
+      bold: node.closest("b") !== null,
+      italic: node.closest("i") !== null,
+      underline: node.closest("u") !== null,
+      strikethrough: node.closest("strike") !== null,
+      insertOrderedList: node.closest("ol") !== null,
+      insertUnorderedList: node.closest("ul") !== null,
+      justifyFull: getTextAlign(node) === "justify",
+      justifyLeft: getTextAlign(node) === "left",
+      justifyCenter: getTextAlign(node) === "center",
+      justifyRight: getTextAlign(node) === "right",
+      fontFamily: getFontFamily(node, fonts),
+      fontSize: getFontSize(node, EDITOR_FONT_SIZE),
+      headerTag: getHeaderTag(node),
+      fontColor: getFontColor(node),
+      backgroundColor: getBackgroundColor(node),
+    });
+  };
+
+  useEffect(() => {
+    const handleSelectionChange = () => {
+      updateActiveFormat();
+    };
+
+    document.addEventListener("selectionchange", handleSelectionChange);
+
+    return () => {
+      document.removeEventListener("selectionchange", handleSelectionChange);
+    };
+  }, []);
+
   return (
     <div className="w-full p-2 border rounded-lg border-stroke">
-      {!isHtmlMode && <EditorButtons editorRef={textEditorRef} />}
+      {!isHtmlMode && (
+        <EditorButtons editorRef={textEditorRef} activeFormat={activeFormat} />
+      )}
       {isHtmlMode ? (
         <textarea
           rows={22}

@@ -3,7 +3,7 @@ import { useState } from "react";
 export default function ColorInput({
   id,
   tooltip,
-  defaultValue = "#000000",
+  value = "#000000",
   onColorChange,
 }) {
   const [showTooltip, setShowTooltip] = useState(false);
@@ -18,7 +18,7 @@ export default function ColorInput({
         type="color"
         id={id}
         className="ml-2 color-picker"
-        defaultValue={defaultValue}
+        value={value}
         onMouseEnter={() => setShowTooltip(true)}
         onMouseLeave={() => setShowTooltip(false)}
         onChange={handleColorChange}

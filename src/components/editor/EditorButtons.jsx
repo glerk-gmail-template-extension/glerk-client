@@ -16,7 +16,7 @@ import {
 import VariableArea from "./VariableArea";
 import { addVariable, storeCurrentCursor } from "../../utils/editor";
 
-export default function EditorButtons({ editorRef }) {
+export default function EditorButtons({ editorRef, activeFormat }) {
   const variablePopoverRef = useRef(null);
   const variableButtonRef = useRef(null);
   const [showVariableArea, setShowVariableArea] = useState(false);
@@ -87,6 +87,7 @@ export default function EditorButtons({ editorRef }) {
                   onClick={() => {
                     handleFormatOptionButton(feature.formatText);
                   }}
+                  isActive={activeFormat[feature.option]}
                 >
                   <feature.Icon size={20} />
                 </IconButton>
@@ -100,6 +101,7 @@ export default function EditorButtons({ editorRef }) {
           <select
             id="font"
             className="outline-none"
+            value={activeFormat.fontFamily || "Sans Serif"}
             onChange={(event) =>
               handleEditorChange("fontName", event.target.value)
             }
@@ -114,7 +116,7 @@ export default function EditorButtons({ editorRef }) {
         <div className="flex items-center h-8 ml-4">
           <select
             id="fontSize"
-            defaultValue={14}
+            value={activeFormat.fontSize || 14}
             className="outline-none"
             onChange={handleFontSizeChange}
           >
@@ -126,34 +128,33 @@ export default function EditorButtons({ editorRef }) {
           </select>
         </div>
         <Divider />
-        <div className="flex items-center h-8 ml-4">
-          <select
-            id="heading"
-            defaultValue="H6"
-            className="outline-none"
-            onChange={(event) =>
-              handleEditorChange("formatBlock", event.target.value)
-            }
-          >
-            {EDITOR_HEADER.map((header) => (
-              <option key={header.option} value={header.option}>
-                {header.description}
-              </option>
-            ))}
-          </select>
+        <div className="flex items-center h-8">
+          {EDITOR_HEADER.map((header) => (
+            <IconButton
+              key={header.option}
+              tooltip={header.description}
+              onClick={() => {
+                handleEditorChange("formatBlock", header.option);
+              }}
+              isActive={activeFormat.headerTag === header.option}
+            >
+              <header.Icon size={20} />
+            </IconButton>
+          ))}
         </div>
         <Divider />
         <LuBaseline size={20} />
         <ColorInput
           id="textColor"
           tooltip="Text Color"
+          value={activeFormat.fontColor || "#000000"}
           onColorChange={(hex) => handleEditorChange("foreColor", hex)}
         />
         <LuHighlighter size={20} className="ml-3" />
         <ColorInput
           id="backgroundColor"
           tooltip="Background Color"
-          defaultValue="#ffffff"
+          value={activeFormat.backgroundColor || "#ffffff"}
           onColorChange={(hex) => handleEditorChange("backColor", hex)}
         />
         <Divider />

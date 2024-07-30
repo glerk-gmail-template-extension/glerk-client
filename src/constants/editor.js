@@ -15,6 +15,12 @@ import {
   LuAlignRight,
   LuIndent,
   LuOutdent,
+  LuHeading1,
+  LuHeading2,
+  LuHeading3,
+  LuHeading4,
+  LuHeading5,
+  LuHeading6,
 } from "react-icons/lu";
 import { applyCommand, createLink } from "../utils/editor";
 
@@ -251,25 +257,31 @@ export const EDITOR_HEADER = [
   {
     option: "H1",
     description: "H1",
+    Icon: LuHeading1,
   },
   {
     option: "H2",
     description: "H2",
+    Icon: LuHeading2,
   },
   {
     option: "H3",
     description: "H3",
+    Icon: LuHeading3,
   },
   {
     option: "H4",
     description: "H4",
+    Icon: LuHeading4,
   },
   {
     option: "H5",
     description: "H5",
+    Icon: LuHeading5,
   },
   {
     option: "H6",
     description: "H6",
+    Icon: LuHeading6,
   },
 ];
