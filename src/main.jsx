@@ -14,13 +14,15 @@ import UpdateGroup from "./pages/Group/Modal/UpdateGroup";
 import DeleteGroup from "./pages/Group/Modal/DeleteGroup";
 import Main from "./pages/Main";
 import ErrorPage from "./pages/Error";
-import DeleteTemplate from "./pages/Template/Modal/DeleteTemplate";
-import DeleteTemplates from "./pages/Template/Modal/DeleteTemplates";
-import AppWrapper from "./components/ui/AppWrapper";
-
-import "./index.css";
 import CreateTemplate from "./pages/Template/CreateTemplate";
 import UpdateTemplate from "./pages/Template/UpdateTemplate";
+import DeleteTemplate from "./pages/Template/Modal/DeleteTemplate";
+import DeleteTemplates from "./pages/Template/Modal/DeleteTemplates";
+
+import AppWrapper from "./components/ui/AppWrapper";
+import RouteChangeTracker from "./components/ga/RouteChangeTracker";
+
+import "./index.css";
 
 const GOOGLE_ANALYTICS = import.meta.env.VITE_GOOGLE_ANALYTICS;
 
@@ -29,7 +31,12 @@ ReactGA.initialize(GOOGLE_ANALYTICS);
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <AppWrapper />,
+    element: (
+      <>
+        <RouteChangeTracker />
+        <AppWrapper />
+      </>
+    ),
     children: [
       {
         path: "signup",

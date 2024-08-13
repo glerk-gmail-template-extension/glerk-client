@@ -8,7 +8,9 @@ export default function RouteChangeTracker() {
   useEffect(() => {
     ReactGA.send({
       hitType: "pageview",
-      page: location.pathname + location.search,
+      path: location.pathname,
+      location: location.pathname,
+      title: location.pathname,
     });
   }, [location]);
 
