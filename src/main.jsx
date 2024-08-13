@@ -5,6 +5,7 @@ import {
   Navigate,
   RouterProvider,
 } from "react-router-dom";
+import ReactGA from "react-ga4";
 
 import Signup from "./pages/Signup";
 import Login from "./pages/Login";
@@ -20,6 +21,10 @@ import AppWrapper from "./components/ui/AppWrapper";
 import "./index.css";
 import CreateTemplate from "./pages/Template/CreateTemplate";
 import UpdateTemplate from "./pages/Template/UpdateTemplate";
+
+const GOOGLE_ANALYTICS = import.meta.env.VITE_GOOGLE_ANALYTICS;
+
+ReactGA.initialize(GOOGLE_ANALYTICS);
 
 const router = createBrowserRouter([
   {
