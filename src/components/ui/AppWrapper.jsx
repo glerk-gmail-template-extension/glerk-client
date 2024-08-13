@@ -6,6 +6,7 @@ import App from "../../App";
 import ToastMessage from "./ToastMessage";
 
 import { toastMessageAtom, userAsyncAtom } from "../../lib/atoms";
+import RouteChangeTracker from "../ga/RouteChangeTracker";
 
 export default function AppWrapper() {
   const [toastMessage] = useAtom(toastMessageAtom);
@@ -26,6 +27,7 @@ export default function AppWrapper() {
 
   return (
     <div className="relative">
+      <RouteChangeTracker />
       {isAuthPath && <Outlet />}
       {!isAuthPath && (user ? <App /> : <Navigate to="/signup" />)}
       {toastMessage.message && (
