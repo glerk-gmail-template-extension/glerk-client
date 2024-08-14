@@ -2,7 +2,7 @@ export const validateGroupName = (groups, name) => {
   if (name.length <= 0 || name.length > 30) {
     return {
       isValid: false,
-      error: "템플릿 이름은 1~30자 사이여야 합니다.",
+      error: "그룹 이름은 1~30자 사이여야 합니다.",
     };
   }
 
@@ -33,7 +33,7 @@ export const validateTemplate = ({ name, hashtag, groupId, subject }) => {
     messages.name = "템플릿 이름은 1~50자 사이여야 합니다.";
   }
 
-  if (!hashtag) {
+  if (!hashtag || hashtag === "#") {
     messages.hashtag = "해시태그를 입력해 주세요.";
   }
 
