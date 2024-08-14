@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import DOMPurify from "dompurify";
 
 import EditorButtons from "../editor/EditorButtons";
+
 import { getStyles } from "../../utils/editor";
 import {
   EDITOR_FONT_FAMILY_PAIR,

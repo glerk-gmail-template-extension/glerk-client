@@ -1,20 +1,18 @@
 import React, { useEffect, useRef, useState } from "react";
 import { LuBaseline, LuHighlighter, LuRemoveFormatting } from "react-icons/lu";
 
+import VariableArea from "./VariableArea";
 import Divider from "../form/Divider";
 import ColorInput from "../form/ColorInput";
-
 import IconButton from "../ui/IconButton";
 
+import { addVariable, storeCurrentCursor } from "../../utils/editor";
 import {
   EDITOR_FEATURES,
   EDITOR_FONT,
   EDITOR_FONT_SIZE,
   EDITOR_HEADER,
 } from "../../constants/editor";
-
-import VariableArea from "./VariableArea";
-import { addVariable, storeCurrentCursor } from "../../utils/editor";
 
 export default function EditorButtons({ editorRef, activeFormat }) {
   const variablePopoverRef = useRef(null);
