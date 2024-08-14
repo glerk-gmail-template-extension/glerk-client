@@ -53,7 +53,7 @@ describe("AppWrapper 컴포넌트 단위 테스트", () => {
       </MemoryRouter>,
     );
 
-    expect(screen.getByText("회원가입")).toBeTruthy();
+    expect(screen.getByText("회원가입")).toBeInTheDocument();
   });
 
   it("사용자가 로그인한 경우 App 컴포넌트를 렌더링 한다.", async () => {
@@ -71,7 +71,7 @@ describe("AppWrapper 컴포넌트 단위 테스트", () => {
       );
     });
 
-    expect(screen.getByText("App 컴포넌트")).toBeTruthy();
+    expect(screen.getByText("App 컴포넌트")).toBeInTheDocument();
   });
 
   it("사용자가 로그인하지 않은 경우 /signup으로 리다이렉트 한다.", async () => {
@@ -108,7 +108,7 @@ describe("AppWrapper 컴포넌트 단위 테스트", () => {
       );
     });
 
-    expect(screen.getByTestId("toast-message")).toBeTruthy();
-    expect(screen.getByText("Test message - Warning")).toBeTruthy();
+    expect(screen.getByTestId("toast-message")).toBeInTheDocument();
+    expect(screen.getByText("Test message - Warning")).toBeInTheDocument();
   });
 });
