@@ -7,7 +7,6 @@ import IconButton from "../ui/IconButton";
 
 import axios from "../../api/axiosConfig";
 import { toastMessageAtom, userAtom } from "../../lib/atoms";
-import profile from "../../assets/images/profile.png";
 
 export default function Navigation() {
   const [user, setUser] = useAtom(userAtom);
@@ -36,7 +35,7 @@ export default function Navigation() {
       <div className="relative flex items-center justify-between">
         <div className="flex">
           <div className="self-center">
-            <Avatar profileUrl={user.profileUrl || profile} />
+            <Avatar profileUrl={user.profileUrl} />
           </div>
           <div className="ml-3 mr-6 text-left">
             <p className="text-base font-semibold">{user.username}</p>
