@@ -36,7 +36,7 @@ export default function CreateGroup() {
     } catch (error) {
       const { status } = error.response;
       if (status === 409) {
-        setValidationMessage(error.response.data.name);
+        setValidationMessage(error.response.data);
       }
     }
   };
