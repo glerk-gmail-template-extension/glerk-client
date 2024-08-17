@@ -1,5 +1,5 @@
 import { forwardRef, useState } from "react";
-import { TbCalendarCode, TbCodePlus } from "react-icons/tb";
+import { TbCalendarCode } from "react-icons/tb";
 
 import SelectBox from "../form/SelectBox";
 import LabelInput from "../form/LabelInput";
@@ -52,12 +52,12 @@ const VariableArea = forwardRef(function VariableArea({ onVariableAdd }, ref) {
             validationMessage={validationMessage}
           />
         </div>
-        <div className="text-primary">
+        <div className="mb-1 text-primary">
           <IconButton
             tooltip="커스텀 변수 추가"
             onClick={() => addCustomVariable(customVariable)}
           >
-            <TbCodePlus size={24} />
+            {"{+}"}
           </IconButton>
         </div>
       </div>
