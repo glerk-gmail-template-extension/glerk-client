@@ -16,7 +16,7 @@ export const storeCurrentCursor = (cursorRef) => {
   if (selection.rangeCount > 0) {
     cursorRef.current = {
       rangeCount: selection.rangeCount,
-      range: selection.getRangeAt(0),
+      range: selection.getRangeAt(0).cloneRange(),
       removeAllRanges: () => selection.removeAllRanges(),
       addRange: (range) => selection.addRange(range),
     };
