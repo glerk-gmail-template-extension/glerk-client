@@ -98,8 +98,10 @@ export default function Editor({ name, value, onChange }) {
   };
 
   useEffect(() => {
-    const handleSelectionChange = () => {
-      updateActiveFormat();
+    const handleSelectionChange = (event) => {
+      if (textEditorRef.current === event.target.activeElement) {
+        updateActiveFormat();
+      }
     };
 
     document.addEventListener("selectionchange", handleSelectionChange);
