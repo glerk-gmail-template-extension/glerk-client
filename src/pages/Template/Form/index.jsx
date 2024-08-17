@@ -11,7 +11,6 @@ import Button from "../../../components/ui/Button";
 import FormInput from "../../../components/form/FormInput";
 import Editor from "../../../components/form/Editor";
 import LabelSelectBox from "../../../components/form/LabelSelectBox";
-import EmailInput from "../../../components/form/EmailInput";
 import EmailListInput from "../../../components/form/EmailListInput";
 import IconButton from "../../../components/ui/IconButton";
 import VariableArea from "../../../components/editor/VariableArea";
@@ -213,31 +212,28 @@ export default function Template({
             )}
           </div>
         </div>
-        <div className="flex w-10/12 mb-4">
-          <EmailInput label="발신자 이메일" {...getFieldProps("sender")} />
-        </div>
-        <div className="flex w-10/12 mb-4">
+        <div className="flex w-10/12 mb-8">
           <EmailListInput
             key="recipients"
             label="수신자 이메일"
             {...getFieldProps("recipients")}
           />
         </div>
-        <div className="flex w-10/12 mb-4">
+        <div className="flex w-10/12 mb-8">
           <EmailListInput
             key="ccList"
             label="CC 이메일"
             {...getFieldProps("ccList")}
           />
         </div>
-        <div className="flex w-10/12 mb-4">
+        <div className="flex w-10/12 mb-8">
           <EmailListInput
             key="bccList"
             label="BCC 이메일"
             {...getFieldProps("bccList")}
           />
         </div>
-        <div className="h-162.5">
+        <div>
           <p className="mb-2 text-sm font-medium text-dark-gray">메일 본문</p>
           <Editor {...getFieldProps("body")} />
         </div>
